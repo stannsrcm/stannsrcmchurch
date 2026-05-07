@@ -4,7 +4,8 @@ LOCATION ="16.39414464880579, 80.15762036561594"
 CONTACT="08641-232260"
 PRIEST & FATHER ="NETTAM RAJESH KUMAR"
 MASS TIMINGS : "SUNDAY 7:00AM"
-MONDAY-SATURDAY: "5:00 - 6:00 PM"
+MONDAY-FRIDAY: "6:00 - 7:00 PM"
+
 
 About Us
 Our Mission
@@ -134,3 +135,4 @@ Online Catholic Bible
 Read the Catholic Bible Online for Free
 USCCB Catholic Bible
 Vatican Official Bible Archive
+
