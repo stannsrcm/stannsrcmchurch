@@ -1,0 +1,72 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --neon: #FF5533;
+  --neon-glow: rgba(255, 85, 51, 0.5);
+}
+
+@layer base {
+  body {
+    @apply bg-black text-white selection:bg-[#FF5533] selection:text-black;
+    background-image: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('/pics/mary.jpg');
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+    font-feature-settings: "ss01", "ss02", "cv01", "cv02";
+  }
+}
+
+@layer components {
+  .glass {
+    @apply bg-white/[0.03] backdrop-blur-xl border border-white/10;
+  }
+
+  .neon-glow {
+    text-shadow: 0 0 15px var(--neon-glow), 0 0 30px rgba(255, 85, 51, 0.2);
+  }
+
+  .neon-border {
+    box-shadow: 0 0 15px var(--neon-glow), inset 0 0 15px var(--neon-glow);
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+/* Stylish Fonts Overrides */
+h1, h2, h3, h4 {
+  @apply tracking-tighter;
+}
+
+.text-neon {
+  color: #FF5533;
+}
+
+.bg-neon {
+  background-color: #FF5533;
+}
+
+.border-neon {
+  border-color: #FF5533;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-black;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-white/10 rounded-full hover:bg-[#FF5533]/50 transition-colors;
+}
