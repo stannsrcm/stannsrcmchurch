@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Hero3D from "@/components/Hero3D";
 import EventCard from "@/components/EventCard";
+import DailyVerse from "@/components/DailyVerse";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Clock, PlayCircle, MapPin, Phone, Mail, Send, CheckCircle2, Loader2, Sparkles } from "lucide-react";
 import Image from "next/image";
@@ -56,6 +57,11 @@ export default function Home() {
     <div className="flex flex-col relative overflow-hidden">
       {/* 3D Hero */}
       <Hero3D />
+
+      {/* Daily Bible Verse */}
+      <div className="relative z-10 -mt-20">
+        <DailyVerse />
+      </div>
 
       <div className="relative z-10">
         {/* About Section */}
