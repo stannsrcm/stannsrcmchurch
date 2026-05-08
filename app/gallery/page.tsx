@@ -8,11 +8,14 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Search, X, Maximize2 } from "lucide-react";
 
 const staticPhotos = [
-  { id: 1, title: "Sunday Mass", category: "Services", url: "/pics/rosary.jpg" },
-  { id: 2, title: "Easter Celebration", category: "Events", url: "/pics/pexels-mario-wallner-107470762-14388650.jpg" },
+  { id: 1, title: "Sacred Rosary", category: "Community", url: "/pics/rosary.jpg" },
+  { id: 2, title: "Church Celebration", category: "Events", url: "/pics/pexels-mario-wallner-107470762-14388650.jpg" },
   { id: 3, title: "Church Exterior", category: "Community", url: "/pics/pexels-alexeydemidov-9949096.jpg" },
-  { id: 4, title: "Choir Practice", category: "Services", url: "/pics/pexels-pavel-danilyuk-8817492.jpg" },
-  { id: 5, title: "Youth Group", category: "Community", url: "/pics/Gemini_Generated_Image_hudzm5hudzm5hudz.png" },
+  { id: 4, title: "Holy Mass", category: "Services", url: "/pics/gallery_mass.jpg" },
+  { id: 5, title: "St. Ann's Exterior", category: "Community", url: "/pics/gallery_exterior.png" },
+  { id: 6, title: "Divine Altar", category: "Services", url: "/pics/gallery_altar_view.jpg" },
+  { id: 7, title: "Sacred Ceremony", category: "Services", url: "/pics/gallery_ceremony.png" },
+  { id: 8, title: "Altar Detail", category: "Services", url: "/pics/gallery_altar_closeup.jpg" },
 ];
 
 const categories = ["All", "Services", "Events", "Community"];
