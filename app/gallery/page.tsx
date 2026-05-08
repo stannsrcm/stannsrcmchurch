@@ -16,6 +16,7 @@ const staticPhotos = [
   { id: 6, title: "Divine Altar", category: "Services", url: "/pics/gallery_altar_view.jpg" },
   { id: 7, title: "Sacred Ceremony", category: "Services", url: "/pics/gallery_ceremony.png" },
   { id: 8, title: "Altar Detail", category: "Services", url: "/pics/gallery_altar_closeup.jpg" },
+  { id: 9, title: "St. Ann's Perspective", category: "Community", url: "/pics/gallery_exterior_full.jpg" },
 ];
 
 const categories = ["All", "Services", "Events", "Community"];
