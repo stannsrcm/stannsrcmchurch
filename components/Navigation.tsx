@@ -42,8 +42,8 @@ const Navigation = () => {
           >
             <Cross className="w-8 h-8 text-[#FF5533] group-hover:drop-shadow-[0_0_10px_rgba(255,85,51,0.8)]" />
           </motion.div>
-          <span className="text-xl font-bold tracking-tighter text-[#FF5533]">
-            ST. ANNS RCM
+          <span className="text-xl font-black tracking-tighter text-[#FF5533]">
+            ST. ANN&apos;S RCM CHURCH
           </span>
         </Link>
 

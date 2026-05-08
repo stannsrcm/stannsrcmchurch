@@ -104,7 +104,7 @@ const Hero3D = () => {
                 textShadow: "0 0 30px rgba(255, 85, 51, 0.8), 0 0 60px rgba(255, 85, 51, 0.4)"
               }}
             >
-              ST. ANNS RCM CHURCH
+              ST. ANN&apos;S RCM CHURCH
             </h1>
           </motion.div>
 

@@ -10,7 +10,7 @@ const Footer = () => {
             <Link href="/" className="flex items-center gap-2">
               <Cross className="w-8 h-8 text-[#FF5533]" />
               <span className="text-xl font-black tracking-tighter text-[#FF5533]">
-                ST. ANNS RCM
+                ST. ANN&apos;S RCM CHURCH
               </span>
             </Link>
             <p className="text-gray-400 text-sm leading-relaxed">
