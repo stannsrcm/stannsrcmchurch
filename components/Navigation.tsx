@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Menu, X, Cross } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const Navigation = () => {
@@ -35,14 +36,17 @@ const Navigation = () => {
       }`}
     >
       <div className="container mx-auto px-6 flex justify-between items-center">
-        <Link href="/" className="flex items-center gap-2 group">
-          <motion.div
-            animate={{ rotate: scrolled ? 360 : 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <Cross className="w-8 h-8 text-[#FF5533] group-hover:drop-shadow-[0_0_10px_rgba(255,85,51,0.8)]" />
-          </motion.div>
-          <span className="text-xl font-black tracking-tighter text-[#FF5533]">
+        <Link href="/" className="flex items-center gap-3 group">
+          <div className="relative w-12 h-12 md:w-16 md:h-16 transition-transform duration-500 group-hover:scale-110">
+            <Image
+              src="/logo3.png"
+              alt="St. Ann's RCM Church Logo"
+              fill
+              className="object-contain filter drop-shadow-[0_0_8px_rgba(255,85,51,0.5)]"
+              priority
+            />
+          </div>
+          <span className="text-xl md:text-2xl font-black tracking-tighter text-[#FF5533]">
             ST. ANN&apos;S RCM CHURCH
           </span>
         </Link>

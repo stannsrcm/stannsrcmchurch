@@ -2,39 +2,10 @@
 
 import { useRef, useMemo, useState, useEffect } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Float, Stars, OrbitControls } from "@react-three/drei";
+import { Stars, OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
 import { motion } from "framer-motion";
-import { FloatingParticles, FloatingCrosses } from "./Atmosphere3D";
-
-const RotatingCross = () => {
-  const group = useRef<THREE.Group>(null);
-  useFrame((state) => {
-    if (group.current) {
-      const targetRotationX = state.mouse.y * 0.4;
-      const targetRotationY = state.mouse.x * 0.4;
-      group.current.rotation.x = THREE.MathUtils.lerp(group.current.rotation.x, targetRotationX, 0.05);
-      group.current.rotation.y = THREE.MathUtils.lerp(group.current.rotation.y, targetRotationY, 0.05);
-    }
-  });
-
-  return (
-    <group ref={group}>
-      <mesh position={[0, 0, 0]}>
-        <boxGeometry args={[0.4, 3.5, 0.4]} />
-        <meshStandardMaterial color="#FF5533" emissive="#FF5533" emissiveIntensity={3} toneMapped={false} />
-      </mesh>
-      <mesh position={[0, 0.8, 0]}>
-        <boxGeometry args={[2.2, 0.4, 0.4]} />
-        <meshStandardMaterial color="#FF5533" emissive="#FF5533" emissiveIntensity={3} toneMapped={false} />
-      </mesh>
-      <mesh position={[0, 0.8, 0]}>
-        <sphereGeometry args={[0.3, 32, 32]} />
-        <meshStandardMaterial color="#FF5533" emissive="#FF5533" emissiveIntensity={10} transparent opacity={0.6} />
-      </mesh>
-    </group>
-  );
-};
+import { FloatingParticles } from "./Atmosphere3D";
 
 const Hero3D = () => {
   const [webGLSupported, setWebGLSupported] = useState(true);
@@ -81,10 +52,6 @@ const Hero3D = () => {
             <pointLight position={[10, 10, 10]} intensity={2} color="#FF5533" />
             <Stars radius={100} depth={50} count={2000} factor={4} saturation={0} fade speed={1} />
             <FloatingParticles count={400} color="#FF5533" />
-            <FloatingCrosses count={5} />
-            <Float speed={1.5} rotationIntensity={0.2} floatIntensity={0.5}>
-              <RotatingCross />
-            </Float>
             <OrbitControls enableZoom={false} enablePan={false} />
           </Canvas>
         ) : null}
