@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Hero3D from "@/components/Hero3D";
 import EventCard from "@/components/EventCard";
 import DailyVerse from "@/components/DailyVerse";
@@ -8,8 +8,16 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { Clock, PlayCircle, MapPin, Phone, Mail, Send, CheckCircle2, Loader2, Sparkles } from "lucide-react";
 import Image from "next/image";
 import { TiltCard } from "@/components/TiltCard";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 export default function Home() {
+  const container = useRef<HTMLDivElement>(null);
   const [formData, setFormData] = useState({ name: "", email: "", subject: "", message: "" });
   const [status, setStatus] = useState({ loading: false, success: false, error: "" });
   const { scrollYProgress } = useScroll();
@@ -53,10 +61,74 @@ export default function Home() {
     { day: "Confession", time: "4:00 PM - 5:30 PM", event: "Mon - Sat" },
   ];
 
+  useGSAP(() => {
+    // 1. About section parallax
+    gsap.from(".about-text", {
+      y: 100,
+      opacity: 0,
+      scrollTrigger: {
+        trigger: "#about",
+        start: "top 80%",
+        end: "center center",
+        scrub: 1,
+      }
+    });
+
+    gsap.from(".about-image", {
+      y: 200,
+      scale: 0.8,
+      scrollTrigger: {
+        trigger: "#about",
+        start: "top bottom",
+        end: "center center",
+        scrub: 1.5,
+      }
+    });
+
+    // 2. Services stagger
+    gsap.from(".service-card", {
+      y: 100,
+      opacity: 0,
+      scale: 0.9,
+      stagger: 0.2,
+      scrollTrigger: {
+        trigger: "#services",
+        start: "top 70%",
+        end: "center center",
+        scrub: 1,
+      }
+    });
+
+    // 3. Contact form parallax
+    gsap.from(".contact-info", {
+      x: -50,
+      opacity: 0,
+      scrollTrigger: {
+        trigger: "#contact",
+        start: "top 80%",
+        end: "center center",
+        scrub: 1,
+      }
+    });
+
+    gsap.from(".contact-form", {
+      x: 50,
+      opacity: 0,
+      scrollTrigger: {
+        trigger: "#contact",
+        start: "top 80%",
+        end: "center center",
+        scrub: 1,
+      }
+    });
+  }, { scope: container });
+
   return (
-    <div className="flex flex-col relative overflow-hidden">
+    <div className="flex flex-col relative overflow-hidden" ref={container}>
       {/* 3D Hero */}
-      <Hero3D />
+      <div className="hero-section">
+        <Hero3D />
+      </div>
 
       {/* Daily Bible Verse */}
       <div className="relative z-10 -mt-20">
@@ -69,10 +141,7 @@ export default function Home() {
           <div className="container mx-auto px-6">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
               <motion.div
-                initial={{ opacity: 0, x: -100 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 1 }}
-                className="space-y-10"
+                className="space-y-10 about-text"
               >
                 <div className="space-y-4">
                   <h2 className="text-[#FF5533] font-black tracking-[0.3em] text-sm uppercase flex items-center gap-3">
@@ -97,11 +166,7 @@ export default function Home() {
                 </div>
               </motion.div>
 
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 1.2 }}
-              >
+              <motion.div className="about-image">
                 <TiltCard className="relative aspect-square group">
                   <div className="absolute -inset-6 border-2 border-[#FF5533]/20 rounded-[3rem] -rotate-6 group-hover:rotate-0 transition-all duration-1000" />
                   <div className="absolute inset-0 glass rounded-[3rem] overflow-hidden shadow-[0_0_50px_rgba(255,85,51,0.1)]">
@@ -135,10 +200,7 @@ export default function Home() {
               {services.map((s, idx) => (
                 <motion.div
                   key={idx}
-                  initial={{ opacity: 0, y: 50 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: idx * 0.15, duration: 0.8 }}
-                  className="group"
+                  className="group service-card"
                 >
                   <TiltCard>
                     <div className="glass p-10 rounded-[2.5rem] border-white/5 hover:border-[#FF5533]/50 transition-all h-full relative overflow-hidden">
@@ -159,7 +221,7 @@ export default function Home() {
         <section id="contact" className="py-32 bg-transparent">
           <div className="container mx-auto px-6">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-24">
-              <div className="space-y-16">
+              <div className="space-y-16 contact-info">
                 <div className="space-y-6">
                   <h2 className="text-[#FF5533] font-black tracking-[0.3em] text-sm uppercase">Divine Connection</h2>
                   <h3 className="text-5xl md:text-8xl font-[1000] tracking-[-0.05em] leading-[0.9] uppercase">We Pray <br /> <span className="text-white/20">For You</span></h3>
@@ -185,10 +247,7 @@ export default function Home() {
               </div>
 
               <motion.div 
-                initial={{ opacity: 0, x: 100 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 1 }}
-                className="glass p-12 rounded-[3.5rem] border-white/10 relative overflow-hidden"
+                className="glass p-12 rounded-[3.5rem] border-white/10 relative overflow-hidden contact-form"
               >
                 {status.success ? (
                   <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="absolute inset-0 z-30 glass flex flex-col items-center justify-center text-center p-12">
