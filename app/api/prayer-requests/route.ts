@@ -9,8 +9,8 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
-    // Logic for sending to kadapajag9@gmail.com would go here
-    console.log(`Email notification sent to kadapajag9@gmail.com for request from ${name}`);
+    // Logic for sending to stannsrcm@gmail.com would go here
+    console.log(`Email notification sent to stannsrcm@gmail.com for request from ${name}`);
 
     const { data, error } = await supabase
       .from("prayer_requests")

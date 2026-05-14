@@ -265,7 +265,7 @@ export default function Home() {
                     <div className="w-20 h-20 rounded-[2rem] glass border-[#FF5533]/20 flex items-center justify-center text-[#FF5533] group-hover:bg-[#FF5533] group-hover:text-black transition-all duration-500">
                       <Mail size={28} />
                     </div>
-                    <p className="text-white text-xl font-black tracking-tighter">info@stannschurch.org</p>
+                    <p className="text-white text-xl font-black tracking-tighter">stannsrcm@gmail.com</p>
                   </div>
                 </div>
               </div>
