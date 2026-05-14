@@ -23,8 +23,8 @@ A premium, production-ready 3D church website built with Next.js 14, Supabase, a
 ## 🔐 Admin Credentials
 
 - **URL**: `/login`
-- **Email**: `admin@church.com`
-- **Password**: `Admin123!`
+- **Email**: 
+- **Password**: 
 
 ## 🛠 Tech Stack
 
