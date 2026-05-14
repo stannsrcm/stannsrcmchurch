@@ -60,7 +60,7 @@ export default function AudioPlayer() {
       </button>
       <audio 
         ref={audioRef} 
-        src="/choir.mp3" 
+        src="/music.mp3" 
         loop 
         preload="auto" 
       />

@@ -123,7 +123,7 @@ export default function AdminDashboard() {
   const tabs = [
     { id: "photos", label: "Gallery", icon: ImageIcon },
     { id: "requests", label: "Prayers", icon: MessageSquare },
-    { id: "events", label: "Events", icon: Calendar },
+    { id: "events", label: "Mass Timings & Events", icon: Calendar },
     { id: "sermons", label: "Sermons", icon: PlayCircle },
   ];
 
@@ -256,9 +256,12 @@ export default function AdminDashboard() {
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-12">
                   {/* Create Event Form */}
                   <section className="glass p-8 rounded-3xl border-white/5 space-y-6">
-                    <h2 className="text-lg font-bold text-white/50 uppercase tracking-widest flex items-center gap-2">
-                      <Plus size={16} /> Add New Event
-                    </h2>
+                    <div className="space-y-2">
+                      <h2 className="text-lg font-bold text-white/50 uppercase tracking-widest flex items-center gap-2">
+                        <Plus size={16} /> Add New Mass Timing / Event
+                      </h2>
+                      <p className="text-xs text-gray-500">Items added here will appear in the Mass Timings section on the public homepage.</p>
+                    </div>
                     <form onSubmit={handleCreateEvent} className="space-y-4">
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <input type="text" placeholder="Event Title" required value={eventForm.title} onChange={e => setEventForm({...eventForm, title: e.target.value})} className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-neon transition-all" />
@@ -275,7 +278,7 @@ export default function AdminDashboard() {
 
                   {/* Events List */}
                   <section className="space-y-6">
-                    <h2 className="text-lg font-bold text-white/50 uppercase tracking-widest">Active Events</h2>
+                    <h2 className="text-lg font-bold text-white/50 uppercase tracking-widest">Active Mass Timings & Events</h2>
                     {loading ? (
                       <div className="flex justify-center py-12"><Loader2 className="w-8 h-8 text-neon animate-spin" /></div>
                     ) : events.length === 0 ? (

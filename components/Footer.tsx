@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Cross, Facebook, Instagram, Twitter, Mail, Phone, MapPin } from "lucide-react";
+import { Facebook, Instagram, Twitter, Mail, Phone, MapPin } from "lucide-react";
 
 const Footer = () => {
   return (
@@ -7,8 +7,14 @@ const Footer = () => {
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
           <div className="space-y-6">
-            <Link href="/" className="flex items-center gap-2">
-              <Cross className="w-8 h-8 text-[#FF5533]" />
+            <Link href="/" className="flex items-center gap-3 group">
+              <div className="relative w-12 h-12 transition-transform duration-500 group-hover:scale-110">
+                <img
+                  src="/logo3.png"
+                  alt="St. Ann's RCM Church Logo"
+                  className="object-contain w-full h-full filter drop-shadow-[0_0_8px_rgba(255,85,51,0.5)]"
+                />
+              </div>
               <span className="text-xl font-black tracking-tighter text-[#FF5533]">
                 ST. ANN&apos;S RCM CHURCH
               </span>
