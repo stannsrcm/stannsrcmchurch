@@ -198,6 +198,12 @@ export default function Home() {
                   </motion.div>
                 ) : null}
 
+                {status.error && (
+                  <div className="p-4 bg-red-500/10 border border-red-500/50 rounded-2xl text-red-500 text-sm font-bold mb-6 text-center">
+                    {status.error}
+                  </div>
+                )}
+
                 <form onSubmit={handleSubmit} className="space-y-8">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <input type="text" name="name" required value={formData.name} onChange={handleInputChange} placeholder="Name" className="w-full bg-white/[0.05] border border-white/10 rounded-3xl px-8 py-5 outline-none focus:border-[#FF5533]/50 transition-all font-bold" />
@@ -205,7 +211,7 @@ export default function Home() {
                   </div>
                   <input type="text" name="subject" required value={formData.subject} onChange={handleInputChange} placeholder="Subject" className="w-full bg-white/[0.05] border border-white/10 rounded-3xl px-8 py-5 outline-none focus:border-[#FF5533]/50 transition-all font-bold" />
                   <textarea name="message" required rows={5} value={formData.message} onChange={handleInputChange} placeholder="Message" className="w-full bg-white/[0.05] border border-white/10 rounded-[2rem] px-8 py-6 outline-none focus:border-[#FF5533]/50 transition-all font-bold resize-none"></textarea>
-                  <button type="submit" disabled={status.loading} className="w-full py-6 rounded-3xl bg-[#FF5533] text-black font-[1000] uppercase tracking-[0.5em] text-sm shadow-[0_20px_50px_rgba(255,85,51,0.3)] hover:scale-[1.02] transition-all flex items-center justify-center gap-4">
+                  <button type="submit" disabled={status.loading} className="w-full py-6 rounded-3xl bg-[#FF5533] text-black font-[1000] uppercase tracking-[0.5em] text-sm shadow-[0_20px_50px_rgba(255,85,51,0.3)] hover:scale-[1.02] transition-all flex items-center justify-center gap-4 disabled:opacity-50 disabled:cursor-not-allowed">
                     {status.loading ? <Loader2 className="animate-spin" /> : <><Send size={20} /> Submit</>}
                   </button>
                 </form>
