@@ -53,14 +53,14 @@ export default function AudioPlayer() {
     >
       <button 
         onClick={toggleMute}
-        className="w-12 h-12 flex items-center justify-center rounded-full glass border border-white/10 text-white hover:bg-white/10 transition-all shadow-[0_0_20px_rgba(255,85,51,0.2)] hover:scale-110 hover:border-[#FF5533]/50"
+        className={`w-12 h-12 flex items-center justify-center rounded-full glass border border-white/10 text-white transition-all shadow-[0_0_20px_rgba(255,85,51,0.2)] hover:scale-110 hover:border-[#FF5533]/50 ${!isPlaying ? "animate-pulse border-[#FF5533]" : ""}`}
         title={isPlaying && !isMuted ? "Mute Choir Music" : "Play Choir Music"}
       >
         {isPlaying && !isMuted ? <Volume2 size={20} className="text-[#FF5533]" /> : <VolumeX size={20} className="text-gray-400" />}
       </button>
       <audio 
         ref={audioRef} 
-        src="https://cdn.pixabay.com/download/audio/2022/04/28/audio_24aee5db64.mp3?filename=choir-singing-hallelujah-106518.mp3" 
+        src="/choir.mp3" 
         loop 
         preload="auto" 
       />
