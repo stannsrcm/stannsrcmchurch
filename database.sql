@@ -10,7 +10,7 @@ CREATE TABLE photos (
 );
 
 -- Create events table
-CREATE TABLE events (
+CREATE TABLE IF NOT EXISTS events (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   title TEXT NOT NULL,
   description TEXT,
@@ -19,6 +19,13 @@ CREATE TABLE events (
   location TEXT NOT NULL,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
+
+-- Enable RLS and add policies for events
+ALTER TABLE events ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Enable insert for public/admin" ON events FOR INSERT WITH CHECK (true);
+CREATE POLICY "Enable select for public" ON events FOR SELECT USING (true);
+CREATE POLICY "Enable delete for admin" ON events FOR DELETE USING (true);
 
 -- Create sermons table
 CREATE TABLE sermons (

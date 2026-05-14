@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Hero3D from "@/components/Hero3D";
 import EventCard from "@/components/EventCard";
 import DailyVerse from "@/components/DailyVerse";
@@ -20,6 +20,7 @@ export default function Home() {
   const container = useRef<HTMLDivElement>(null);
   const [formData, setFormData] = useState({ name: "", email: "", subject: "", message: "" });
   const [status, setStatus] = useState({ loading: false, success: false, error: "" });
+  const [events, setEvents] = useState<any[]>([]);
   const { scrollYProgress } = useScroll();
   const y1 = useTransform(scrollYProgress, [0, 1], [0, -200]);
 
@@ -54,12 +55,26 @@ export default function Home() {
     }
   };
 
-  const services = [
-    { day: "Sunday", time: "7:00 AM", event: "Holy Mass & Rosary" },
-    { day: "Monday - Friday", time: "6:00 PM & 7:00 PM", event: "Daily Mass" },
-    { day: "Saturday", time: "5:30 PM", event: "Vigil Mass" },
-    { day: "Confession", time: "4:00 PM - 5:30 PM", event: "Mon - Sat" },
-  ];
+  useEffect(() => {
+    fetch("/api/events")
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data) && data.length > 0) {
+          setEvents(data);
+        } else {
+          // Fallback if no events in DB yet, so the section doesn't look empty
+          setEvents([
+            { id: "1", date: "Sunday", time: "7:00 AM", title: "Holy Mass & Rosary", location: "Main Church" },
+            { id: "2", date: "Monday - Friday", time: "6:00 PM & 7:00 PM", title: "Daily Mass", location: "Main Church" },
+            { id: "3", date: "Saturday", time: "5:30 PM", title: "Vigil Mass", location: "Main Church" },
+            { id: "4", date: "Confession", time: "4:00 PM - 5:30 PM", title: "Mon - Sat", location: "Confessional" },
+          ]);
+        }
+      })
+      .catch(() => {
+        setEvents([]);
+      });
+  }, []);
 
   useGSAP(() => {
     // 1. About section parallax
@@ -197,18 +212,27 @@ export default function Home() {
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {services.map((s, idx) => (
+              {events.map((e, idx) => (
                 <motion.div
-                  key={idx}
+                  key={e.id || idx}
                   className="group service-card"
                 >
                   <TiltCard>
-                    <div className="glass p-10 rounded-[2.5rem] border-white/5 hover:border-[#FF5533]/50 transition-all h-full relative overflow-hidden">
-                      <div className="absolute top-0 right-0 w-32 h-32 bg-[#FF5533]/5 blur-[60px] group-hover:bg-[#FF5533]/20 transition-colors" />
-                      <Clock className="text-[#FF5533] mb-8 group-hover:scale-125 transition-transform duration-500" size={40} />
-                      <h4 className="text-2xl font-black mb-2 uppercase tracking-tighter">{s.day}</h4>
-                      <p className="text-[#FF5533] font-black text-2xl mb-4 tracking-[-0.02em]">{s.time}</p>
-                      <p className="text-gray-500 text-[10px] font-black uppercase tracking-[0.3em]">{s.event}</p>
+                    <div className="glass p-10 rounded-[2.5rem] border-white/5 hover:border-[#FF5533]/50 transition-all h-full relative overflow-hidden flex flex-col justify-between">
+                      <div>
+                        <div className="absolute top-0 right-0 w-32 h-32 bg-[#FF5533]/5 blur-[60px] group-hover:bg-[#FF5533]/20 transition-colors" />
+                        <Clock className="text-[#FF5533] mb-8 group-hover:scale-125 transition-transform duration-500" size={40} />
+                        <h4 className="text-2xl font-black mb-2 uppercase tracking-tighter">{e.date}</h4>
+                        <p className="text-[#FF5533] font-black text-2xl mb-4 tracking-[-0.02em]">{e.time}</p>
+                        <p className="text-white font-bold mb-2 uppercase tracking-widest">{e.title}</p>
+                        {e.description && <p className="text-gray-400 text-sm mb-4 line-clamp-3">{e.description}</p>}
+                      </div>
+                      {e.location && (
+                        <div className="flex items-center gap-2 text-gray-500 text-[10px] font-black uppercase tracking-[0.3em] mt-4 pt-4 border-t border-white/5">
+                          <MapPin size={12} className="text-[#FF5533]" />
+                          <span>{e.location}</span>
+                        </div>
+                      )}
                     </div>
                   </TiltCard>
                 </motion.div>

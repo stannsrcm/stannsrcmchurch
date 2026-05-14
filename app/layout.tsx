@@ -5,6 +5,7 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Providers } from "@/components/Providers";
 import GlobalScene3D from "@/components/GlobalScene3D";
+import AudioPlayer from "@/components/AudioPlayer";
 import Image from "next/image";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -24,6 +25,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <Providers>
           <GlobalScene3D />
+          <AudioPlayer />
           <Navigation />
           <main>{children}</main>
           <Footer />

@@ -30,19 +30,25 @@ export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState("photos");
   const [photos, setPhotos] = useState<any[]>([]);
   const [requests, setRequests] = useState<any[]>([]);
+  const [events, setEvents] = useState<any[]>([]);
+  const [eventForm, setEventForm] = useState({ title: "", description: "", date: "", time: "", location: "" });
+  const [creatingEvent, setCreatingEvent] = useState(false);
   const [loading, setLoading] = useState(true);
 
   const fetchData = async () => {
     setLoading(true);
     try {
-      const [photoRes, requestRes] = await Promise.all([
+      const [photoRes, requestRes, eventRes] = await Promise.all([
         fetch("/api/photos"),
-        fetch("/api/prayer-requests/admin")
+        fetch("/api/prayer-requests/admin"),
+        fetch("/api/events")
       ]);
       const photoData = await photoRes.json();
       const requestData = await requestRes.json();
+      const eventData = await eventRes.json();
       setPhotos(Array.isArray(photoData) ? photoData : []);
       setRequests(Array.isArray(requestData) ? requestData : []);
+      setEvents(Array.isArray(eventData) ? eventData : []);
     } catch (err) {
       console.error(err);
     } finally {
@@ -73,6 +79,37 @@ export default function AdminDashboard() {
       const res = await fetch(`/api/prayer-requests/admin?id=${id}`, { method: "DELETE" });
       if (res.ok) setRequests(requests.filter(r => r.id !== id));
     } catch (err) { alert("Failed to delete request"); }
+  };
+
+  const handleCreateEvent = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setCreatingEvent(true);
+    try {
+      const res = await fetch("/api/events", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(eventForm)
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setEvents([...events, data.data]);
+        setEventForm({ title: "", description: "", date: "", time: "", location: "" });
+      } else {
+        alert("Failed to create event");
+      }
+    } catch (err) {
+      alert("Error creating event");
+    } finally {
+      setCreatingEvent(false);
+    }
+  };
+
+  const handleDeleteEvent = async (id: string) => {
+    if (!confirm("Are you sure you want to delete this event?")) return;
+    try {
+      const res = await fetch(`/api/events?id=${id}`, { method: "DELETE" });
+      if (res.ok) setEvents(events.filter(e => e.id !== id));
+    } catch (err) { alert("Failed to delete event"); }
   };
 
   if (status === "loading") {
@@ -216,10 +253,47 @@ export default function AdminDashboard() {
               )}
 
               {activeTab === "events" && (
-                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="glass p-12 rounded-[2.5rem] border-white/5 text-center">
-                  <Calendar className="w-16 h-16 text-gray-700 mx-auto mb-6" />
-                  <h3 className="text-2xl font-bold mb-2 text-gray-400">Events Management</h3>
-                  <button className="px-8 py-4 bg-white/5 border border-white/10 rounded-full text-white/50 text-xs font-bold uppercase tracking-widest cursor-not-allowed">Coming Soon</button>
+                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-12">
+                  {/* Create Event Form */}
+                  <section className="glass p-8 rounded-3xl border-white/5 space-y-6">
+                    <h2 className="text-lg font-bold text-white/50 uppercase tracking-widest flex items-center gap-2">
+                      <Plus size={16} /> Add New Event
+                    </h2>
+                    <form onSubmit={handleCreateEvent} className="space-y-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <input type="text" placeholder="Event Title" required value={eventForm.title} onChange={e => setEventForm({...eventForm, title: e.target.value})} className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-neon transition-all" />
+                        <input type="text" placeholder="Location" required value={eventForm.location} onChange={e => setEventForm({...eventForm, location: e.target.value})} className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-neon transition-all" />
+                        <input type="text" placeholder="Date (e.g. Sunday)" required value={eventForm.date} onChange={e => setEventForm({...eventForm, date: e.target.value})} className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-neon transition-all" />
+                        <input type="text" placeholder="Time (e.g. 7:00 AM)" required value={eventForm.time} onChange={e => setEventForm({...eventForm, time: e.target.value})} className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-neon transition-all" />
+                      </div>
+                      <textarea placeholder="Description (optional)" rows={3} value={eventForm.description} onChange={e => setEventForm({...eventForm, description: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-neon transition-all resize-none"></textarea>
+                      <button type="submit" disabled={creatingEvent} className="px-6 py-3 bg-neon text-black font-bold uppercase tracking-widest rounded-xl hover:scale-105 transition-all disabled:opacity-50 flex items-center gap-2">
+                        {creatingEvent ? <Loader2 size={16} className="animate-spin" /> : <Plus size={16} />} Create Event
+                      </button>
+                    </form>
+                  </section>
+
+                  {/* Events List */}
+                  <section className="space-y-6">
+                    <h2 className="text-lg font-bold text-white/50 uppercase tracking-widest">Active Events</h2>
+                    {loading ? (
+                      <div className="flex justify-center py-12"><Loader2 className="w-8 h-8 text-neon animate-spin" /></div>
+                    ) : events.length === 0 ? (
+                      <div className="glass p-12 rounded-[2.5rem] border-white/5 text-center text-gray-500">No events found.</div>
+                    ) : (
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {events.map((e) => (
+                          <div key={e.id} className="glass p-6 rounded-2xl border-white/5 relative group">
+                            <button onClick={() => handleDeleteEvent(e.id)} className="absolute top-4 right-4 w-8 h-8 bg-red-500/20 text-red-500 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-500 hover:text-white"><Trash2 size={14} /></button>
+                            <Calendar className="text-neon mb-4" size={24} />
+                            <h3 className="font-bold text-lg mb-1">{e.title}</h3>
+                            <p className="text-xs text-gray-500 uppercase tracking-widest mb-3">{e.date} • {e.time}</p>
+                            <p className="text-sm text-gray-400 line-clamp-2">{e.description || "No description provided."}</p>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </section>
                 </motion.div>
               )}
 
