@@ -6,6 +6,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { useUI } from "./UIProvider";
+import { motion, AnimatePresence } from "framer-motion";
 
 const Navigation = () => {
   const { openTour } = useUI();
