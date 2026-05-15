@@ -144,28 +144,30 @@ export default function ParticleChurch({ progress = 0, vortex = 0 }) {
     });
 
     // 3. ROSE WINDOW
-    const roseCenter = [0, 8, -9.5];
-    for (let r = 0; r <= 3; r += 0.2) {
-      for (let a = 0; a < Math.PI * 2; a += 0.2) {
-        if (Math.random() < 0.7) {
-          addParticle(roseCenter[0] + Math.cos(a) * r, roseCenter[1] + Math.sin(a) * r, roseCenter[2], STAINED_BLUE);
-        }
+    // 3.1 LARGE CENTRAL CRUCIFIX (Sacred White - CENTERED AT ORIGIN)
+    const SACRED_WHITE = new THREE.Color('#ffffff');
+    const crossZ = -8; // Keep it slightly back for depth
+    // Vertical Beam (Centered at 0,0)
+    for (let y = -6; y <= 6; y += 0.08) {
+      for (let j = 0; j < 10; j++) {
+        addParticle((Math.random()-0.5)*0.2, y + 4, crossZ, SACRED_WHITE);
+      }
+    }
+    // Horizontal Beam (Centered at 0,0)
+    for (let x = -4; x <= 4; x += 0.08) {
+      for (let j = 0; j < 10; j++) {
+        addParticle(x, 6, crossZ, SACRED_WHITE);
       }
     }
 
-    // 3.1 LARGE CENTRAL CRUCIFIX (Sacred White)
-    const SACRED_WHITE = new THREE.Color('#ffffff');
-    const crucifixPos = [0, 15, -9.8]; // Above Rose Window
-    // Vertical Beam
-    for (let y = 12; y <= 19; y += 0.1) {
-      for (let j = 0; j < 5; j++) {
-        addParticle(crucifixPos[0] + (Math.random()-0.5)*0.15, y, crucifixPos[2], SACRED_WHITE);
-      }
-    }
-    // Horizontal Beam
-    for (let x = -2; x <= 2; x += 0.1) {
-      for (let j = 0; j < 5; j++) {
-        addParticle(x, 17, crucifixPos[2], SACRED_WHITE);
+    // 1. MAIN NAVE (Relative to center)
+    for (let x = -8; x <= 8; x += 0.4) {
+      for (let z = -12; z <= 6; z += 0.4) {
+        for (let y = -4; y <= 4; y += 0.4) {
+          if ((Math.abs(x) > 7.6 || Math.abs(z) > 11.6 || z > 5.6) && Math.random() < 0.4) {
+            addParticle(x, y - 2, z, WARM_STONE);
+          }
+        }
       }
     }
 
