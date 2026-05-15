@@ -79,59 +79,67 @@ export default function ParticleChurch({ progress = 0, vortex = 0 }) {
       const i3 = i * 3;
 
       // Random initial positions (chaos)
-      randomPositions[i3] = (Math.random() - 0.5) * 40;
-      randomPositions[i3 + 1] = (Math.random() - 0.5) * 40;
-      randomPositions[i3 + 2] = (Math.random() - 0.5) * 40;
+      randomPositions[i3] = (Math.random() - 0.5) * 50;
+      randomPositions[i3 + 1] = (Math.random() - 0.5) * 50;
+      randomPositions[i3 + 2] = (Math.random() - 0.5) * 50;
 
-      // Detailed Cathedral Shape Generation
+      // Precise St. Ann's Church Structure Generation
       let tx = 0, ty = 0, tz = 0;
       const type = Math.random();
 
-      if (type < 0.4) {
-        // Main Cathedral Body (Rectangular base + arched top)
-        tx = (Math.random() - 0.5) * 8;
-        const height = Math.random() * 10 - 5;
-        // Curve the top for the arched roof feel
-        const roofCurve = Math.cos((tx / 4) * (Math.PI / 2)) * 2;
-        ty = height + roofCurve * 0.5;
-        tz = (Math.random() - 0.5) * 5;
-      } else if (type < 0.7) {
-        // Two Majestic Spires/Towers
-        const side = Math.random() > 0.5 ? 1 : -1;
-        tx = side * 3.5 + (Math.random() - 0.5) * 1.5;
-        const towerHeight = Math.random() * 15 - 5;
-        // Taper the towers towards the top
-        const taper = 1.0 - (towerHeight + 5) / 15;
-        tx *= (0.8 + taper * 0.2);
+      if (type < 0.35) {
+        // Main Horizontal Body & Arches (Center-Right)
+        tx = Math.random() * 8 - 2; // Offset to right
+        ty = Math.random() * 5 - 4;
+        tz = (Math.random() - 0.5) * 3;
+        // Arches detail
+        if (Math.random() > 0.8) {
+          tx = Math.floor(tx / 1.5) * 1.5; // Snap to arch intervals
+          ty += Math.sin(Math.random() * Math.PI) * 0.5;
+        }
+      } else if (type < 0.55) {
+        // Left Bell Tower
+        tx = -5 + (Math.random() - 0.5) * 1.5;
+        const towerHeight = Math.random() * 12 - 4;
         ty = towerHeight;
         tz = (Math.random() - 0.5) * 1.5;
-      } else if (type < 0.8) {
-        // The Holy Cross (Higher density)
-        if (Math.random() > 0.4) {
-          // Vertical post
-          tx = (Math.random() - 0.5) * 0.15;
-          ty = 10 + Math.random() * 3;
-        } else {
-          // Horizontal bar
-          tx = (Math.random() - 0.5) * 1.5;
-          ty = 11.5 + (Math.random() - 0.5) * 0.15;
+        // Top Cross on Tower
+        if (ty > 7) {
+           tx = -5 + (Math.random() - 0.5) * 0.1;
+        }
+      } else if (type < 0.75) {
+        // Central Dome / Conical Roof
+        const angle = Math.random() * Math.PI * 2;
+        const radius = Math.random() * 2 * (1.0 - (Math.random() * 0.5)); // Tapered
+        tx = 2 + Math.cos(angle) * radius;
+        ty = 1 + Math.random() * 4;
+        tz = Math.sin(angle) * radius;
+        // Statue on top of Dome
+        if (ty > 4.5) {
+          tx = 2 + (Math.random() - 0.5) * 0.2;
+          ty = 5 + Math.random() * 1;
+        }
+      } else if (type < 0.9) {
+        // Right Gabled Wing
+        tx = 7 + (Math.random() - 0.5) * 2;
+        const gHeight = Math.random() * 6 - 4;
+        // Triangular top
+        const peak = 1.0 - Math.abs(tx - 7) / 1.0;
+        ty = gHeight + peak * 2;
+        tz = (Math.random() - 0.5) * 2;
+      } else {
+        // Crosses & Fine Detail (Highest Density)
+        const crossType = Math.random();
+        if (crossType < 0.4) {
+          // Cross on Left Tower
+          tx = -5 + (Math.random() - 0.5) * (Math.random() > 0.5 ? 1.5 : 0.1);
+          ty = 7.5 + (Math.random() > 0.5 ? 0 : Math.random() * 1.5);
+        } else if (crossType < 0.8) {
+          // Cross on Right Wing
+          tx = 7 + (Math.random() - 0.5) * (Math.random() > 0.5 ? 1.0 : 0.1);
+          ty = 4.5 + (Math.random() > 0.5 ? 0 : Math.random() * 1.0);
         }
         tz = 0;
-      } else if (type < 0.9) {
-        // Cathedral Entrance Arch & Large Windows
-        const side = Math.random() > 0.5 ? 1 : -1;
-        const winX = side * 1.8;
-        const winY = Math.random() * 4 - 2;
-        const arch = Math.sin(Math.random() * Math.PI) * 0.5;
-        tx = winX + (Math.random() - 0.5) * 0.8;
-        ty = winY + arch;
-        tz = 2.6; // Slightly in front
-      } else {
-        // Flying Buttresses / Side Aisles
-        const side = Math.random() > 0.5 ? 1 : -1;
-        tx = side * (4.5 + Math.random() * 2);
-        ty = Math.random() * 6 - 5;
-        tz = (Math.random() - 0.5) * 3;
       }
 
       positions[i3] = tx;
