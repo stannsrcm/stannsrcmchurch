@@ -1,7 +1,11 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import Hero3D from "@/components/Hero3D";
+import dynamic from "next/dynamic";
+
+const Hero3D = dynamic(() => import("@/components/Hero3D"), { ssr: false });
+const VirtualTour = dynamic(() => import("@/components/VirtualTour"), { ssr: false });
+
 import EventCard from "@/components/EventCard";
 import DailyVerse from "@/components/DailyVerse";
 import { motion, useScroll, useTransform } from "framer-motion";
@@ -11,7 +15,6 @@ import { TiltCard } from "@/components/TiltCard";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import VirtualTour from "@/components/VirtualTour";
 import { AnimatePresence } from "framer-motion";
 
 if (typeof window !== "undefined") {
