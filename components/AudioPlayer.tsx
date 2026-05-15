@@ -10,22 +10,23 @@ export default function AudioPlayer() {
   const audioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
+    const handleStartMusic = () => {
+      if (audioRef.current) {
+        audioRef.current.play().then(() => setIsPlaying(true)).catch(() => {});
+      }
+    };
+
+    window.addEventListener("startMusic", handleStartMusic);
+
     if (audioRef.current) {
-      // Attempt to auto-play on mount
-      audioRef.current.volume = 0.5; // 50% volume so it's not too loud
-      
+      audioRef.current.volume = 0.5;
       const playPromise = audioRef.current.play();
-      
       if (playPromise !== undefined) {
-        playPromise.then(() => {
-          setIsPlaying(true);
-        }).catch((error) => {
-          // Auto-play was prevented by the browser. User interaction is required.
-          console.log("Autoplay prevented by browser. User must click play.");
-          setIsPlaying(false);
-        });
+        playPromise.then(() => setIsPlaying(true)).catch(() => {});
       }
     }
+
+    return () => window.removeEventListener("startMusic", handleStartMusic);
   }, []);
 
   const toggleMute = () => {
@@ -46,17 +47,22 @@ export default function AudioPlayer() {
 
   return (
     <motion.div 
-      initial={{ opacity: 0, y: 50 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 2, duration: 1 }}
-      className="fixed bottom-6 left-6 z-50"
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ delay: 3, duration: 1 }}
+      className="fixed bottom-8 left-8 z-[60]"
     >
       <button 
         onClick={toggleMute}
-        className={`w-12 h-12 flex items-center justify-center rounded-full glass border border-white/10 text-white transition-all shadow-[0_0_20px_rgba(255,85,51,0.2)] hover:scale-110 hover:border-[#FF5533]/50 ${!isPlaying ? "animate-pulse border-[#FF5533]" : ""}`}
-        title={isPlaying && !isMuted ? "Mute Choir Music" : "Play Choir Music"}
+        className={`w-14 h-14 flex items-center justify-center rounded-full glass border border-white/10 text-white transition-all duration-500 shadow-2xl hover:scale-110 hover:border-[#D4A24C]/50 group ${!isPlaying ? "animate-pulse border-[#D4A24C]/50" : ""}`}
+        title={isPlaying && !isMuted ? "Mute Choir" : "Play Choir"}
       >
-        {isPlaying && !isMuted ? <Volume2 size={20} className="text-[#FF5533]" /> : <VolumeX size={20} className="text-gray-400" />}
+        <div className="absolute inset-0 rounded-full bg-[#D4A24C]/5 group-hover:bg-[#D4A24C]/10 transition-colors" />
+        {isPlaying && !isMuted ? (
+          <Volume2 size={20} className="text-[#D4A24C] gold-glow relative z-10" />
+        ) : (
+          <VolumeX size={20} className="text-white/40 relative z-10" />
+        )}
       </button>
       <audio 
         ref={audioRef} 

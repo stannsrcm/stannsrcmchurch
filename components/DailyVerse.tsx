@@ -33,43 +33,43 @@ const DailyVerse = () => {
       {/* 3D Card Effect */}
       <div className="relative group">
         {/* Glow Effect */}
-        <div className="absolute -inset-1 bg-gradient-to-r from-[#FF5533] via-[#FF7733] to-[#FF5533] rounded-2xl blur opacity-30 group-hover:opacity-60 transition-opacity duration-500" />
+        <div className="absolute -inset-1 bg-gradient-to-r from-[#C46A2D] via-[#D4A24C] to-[#C46A2D] rounded-2xl blur opacity-20 group-hover:opacity-40 transition-opacity duration-[2000ms]" />
 
         {/* Main Card */}
-        <div className="relative bg-black/80 backdrop-blur-xl rounded-2xl p-8 md:p-12 border border-[#FF5533]/30 overflow-hidden">
+        <div className="relative glass rounded-[2.5rem] p-10 md:p-16 border border-white/5 overflow-hidden shadow-2xl bg-[#1A1A1A]/80">
           {/* Background Pattern */}
-          <div className="absolute inset-0 opacity-5">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,#FF5533_0%,transparent_50%)]" />
+          <div className="absolute inset-0 opacity-10">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(196,106,45,0.1)_0%,_transparent_70%)]" />
           </div>
 
           {/* Header */}
-          <div className="relative flex items-center justify-between mb-6">
-            <div className="flex items-center gap-3">
-              <div className="p-3 bg-[#FF5533]/10 rounded-xl">
-                <BookOpen className="w-6 h-6 text-[#FF5533]" />
+          <div className="relative flex items-center justify-between mb-10">
+            <div className="flex items-center gap-4">
+              <div className="p-4 bg-[#C46A2D]/5 rounded-2xl border border-[#C46A2D]/10">
+                <BookOpen className="w-5 h-5 text-[#C46A2D]" />
               </div>
               <div>
-                <h3 className="text-[#FF5533] font-bold text-lg tracking-wider">
+                <h3 className="text-[#D4A24C] font-serif text-2xl tracking-tight gold-glow">
                   దైనిక వాక్యం
                 </h3>
-                <p className="text-white/50 text-sm">Daily Verse</p>
+                <p className="text-white/20 text-[10px] font-black uppercase tracking-[0.4em]">Sacred Revelation</p>
               </div>
             </div>
-            <div className="flex items-center gap-2 text-white/40">
-              <Calendar className="w-4 h-4" />
-              <span className="text-sm">{today.getDate()}</span>
+            <div className="hidden md:flex items-center gap-3 text-white/20 font-black text-[10px] uppercase tracking-[0.3em]">
+              <Calendar className="w-3 h-3" />
+              <span>{dateString}</span>
             </div>
           </div>
 
           {/* Verse Content */}
-          <div className="relative space-y-6">
+          <div className="relative space-y-10">
             {/* Telugu Verse */}
             <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.7 }}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 0.7 }}
             >
-              <p className="text-2xl md:text-3xl text-white leading-relaxed font-medium">
+              <p className="text-3xl md:text-5xl text-[#FAF9F6] leading-[1.3] font-serif tracking-tight">
                 {verse.telugu}
               </p>
             </motion.div>
@@ -78,14 +78,14 @@ const DailyVerse = () => {
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.9 }}
-              className="flex items-center gap-2"
+              transition={{ duration: 1, delay: 1 }}
+              className="flex items-center gap-4"
             >
-              <div className="h-px w-12 bg-[#FF5533]/50" />
-              <p className="text-[#FF5533] font-bold text-lg tracking-wider">
+              <div className="h-[1px] w-16 bg-gradient-to-r from-transparent to-[#C46A2D]/30" />
+              <p className="text-[#D4A24C] font-serif italic text-2xl tracking-wide">
                 {verse.reference}
               </p>
-              <div className="h-px flex-1 bg-[#FF5533]/50" />
+              <div className="h-[1px] flex-1 bg-gradient-to-r from-[#C46A2D]/30 to-transparent" />
             </motion.div>
 
             {/* English Translation (Toggle) */}
@@ -95,11 +95,11 @@ const DailyVerse = () => {
                 opacity: showEnglish ? 1 : 0,
                 height: showEnglish ? "auto" : 0,
               }}
-              transition={{ duration: 0.4 }}
+              transition={{ duration: 0.6, ease: "easeInOut" }}
               className="overflow-hidden"
             >
-              <div className="pt-4 border-t border-white/10">
-                <p className="text-white/60 text-lg italic leading-relaxed">
+              <div className="pt-8 border-t border-white/5">
+                <p className="text-white/40 text-xl font-light italic leading-relaxed font-serif">
                   {verse.english}
                 </p>
               </div>
@@ -109,20 +109,20 @@ const DailyVerse = () => {
             <motion.button
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 1 }}
+              transition={{ duration: 1, delay: 1.2 }}
               onClick={() => setShowEnglish(!showEnglish)}
-              className="flex items-center gap-2 text-white/40 hover:text-[#FF5533] transition-colors text-sm tracking-wider uppercase"
+              className="flex items-center gap-3 text-white/30 hover:text-[#D6B36A] transition-all duration-500 text-[9px] font-black tracking-[0.4em] uppercase"
             >
-              <span>{showEnglish ? "Hide" : "Show"} English</span>
-              <div className={`w-2 h-2 rounded-full bg-[#FF5533] ${showEnglish ? "opacity-100" : "opacity-30"}`} />
+              <span>{showEnglish ? "Simplify" : "Expand"} Translation</span>
+              <div className={`w-1.5 h-1.5 rounded-full transition-all duration-500 ${showEnglish ? "bg-[#D6B36A] gold-glow" : "bg-white/10"}`} />
             </motion.button>
           </div>
 
           {/* Decorative Cross */}
-          <div className="absolute top-4 right-4 opacity-10">
-            <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
-              <rect x="25" y="5" width="10" height="50" fill="#FF5533" />
-              <rect x="10" y="20" width="40" height="10" fill="#FF5533" />
+          <div className="absolute top-10 right-10 opacity-[0.03]">
+            <svg width="100" height="150" viewBox="0 0 100 150" fill="none">
+              <rect x="45" y="0" width="10" height="150" fill="white" />
+              <rect x="20" y="40" width="60" height="10" fill="white" />
             </svg>
           </div>
         </div>

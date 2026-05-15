@@ -31,42 +31,48 @@ const Navigation = () => {
 
   return (
     <nav
-      className={`fixed top-0 w-full z-50 transition-all duration-300 ${
-        scrolled ? "glass py-2" : "bg-transparent py-4"
+      className={`fixed top-0 w-full z-50 transition-all duration-500 ${
+        scrolled ? "glass py-2" : "bg-transparent py-6"
       }`}
     >
       <div className="container mx-auto px-6 flex justify-between items-center">
-        <Link href="/" className="flex items-center gap-3 group">
-          <div className="relative w-12 h-12 md:w-16 md:h-16 transition-transform duration-500 group-hover:scale-110">
+        <Link href="/" className="flex items-center gap-4 group">
+          <div className="relative w-12 h-12 md:w-14 md:h-14 transition-transform duration-700 group-hover:rotate-[360deg] scale-110">
             <Image
               src="/logo3.png"
               alt="St. Ann's RCM Church Logo"
               fill
-              className="object-contain filter drop-shadow-[0_0_8px_rgba(255,85,51,0.5)]"
+              className="object-contain brightness-110 saturate-50 contrast-125"
               priority
             />
           </div>
-          <span className="text-xl md:text-2xl font-black tracking-tighter text-[#FF5533]">
-            ST. ANN&apos;S RCM CHURCH
-          </span>
+          <div className="flex flex-col">
+            <span className="text-xl md:text-2xl font-serif tracking-[0.2em] text-[#D4A24C] gold-glow uppercase leading-tight">
+              ST. ANN&apos;S
+            </span>
+            <span className="text-[10px] tracking-[0.4em] text-[#9CA3AF] uppercase font-bold">
+              RCM CHURCH • SATTENAPALLE
+            </span>
+          </div>
         </Link>
 
         {/* Desktop Nav */}
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden md:flex items-center gap-10">
           {navLinks.map((link) => (
             <Link
               key={link.name}
               href={link.href}
-              className={`text-sm font-bold uppercase tracking-widest transition-colors hover:text-[#FF5533] ${
-                pathname === link.href ? "text-[#FF5533]" : "text-gray-400"
+              className={`text-[11px] font-black uppercase tracking-[0.3em] transition-all duration-300 hover:text-[#D4A24C] relative group ${
+                pathname === link.href ? "text-[#D4A24C]" : "text-[#D1D5DB]"
               }`}
             >
               {link.name}
+              <span className={`absolute -bottom-2 left-0 w-0 h-[1px] bg-[#D4A24C] transition-all duration-500 group-hover:w-full ${pathname === link.href ? "w-full" : ""}`} />
             </Link>
           ))}
           <Link
             href="/admin"
-            className="px-6 py-2 rounded-full border-2 border-[#FF5533]/50 text-[#FF5533] text-xs font-black uppercase tracking-widest hover:bg-[#FF5533] hover:text-black transition-all shadow-[0_0_20px_rgba(255,85,51,0.1)]"
+            className="px-8 py-2.5 rounded-full border border-white/10 glass text-[#D1D5DB] text-[10px] font-black uppercase tracking-[0.3em] hover:bg-[#D4A24C] hover:text-[#111111] hover:border-[#D4A24C] transition-all duration-500"
           >
             Admin Portal
           </Link>
@@ -102,7 +108,7 @@ const Navigation = () => {
             ))}
             <Link
               href="/admin"
-              className="px-6 py-2 rounded-full bg-neon text-black font-bold"
+              className="px-6 py-2 rounded-full bg-[#D6B36A] text-[#0F141B] font-bold"
               onClick={() => setIsOpen(false)}
             >
               Admin Portal

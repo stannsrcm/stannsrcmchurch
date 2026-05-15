@@ -77,63 +77,81 @@ export default function Home() {
   }, []);
 
   useGSAP(() => {
-    // 1. About section parallax
+    // Cinematic Reveal for all sections
+    gsap.utils.toArray("section").forEach((section: any) => {
+      gsap.from(section, {
+        opacity: 0,
+        y: 100,
+        filter: "blur(20px)",
+        scrollTrigger: {
+          trigger: section,
+          start: "top 90%",
+          end: "top 20%",
+          scrub: 1.5,
+        }
+      });
+    });
+
+    // 1. About section depth
     gsap.from(".about-text", {
-      y: 100,
+      x: -100,
       opacity: 0,
       scrollTrigger: {
         trigger: "#about",
         start: "top 80%",
         end: "center center",
-        scrub: 1,
+        scrub: 2,
       }
     });
 
     gsap.from(".about-image", {
-      y: 200,
       scale: 0.8,
+      rotateY: 20,
+      opacity: 0,
       scrollTrigger: {
         trigger: "#about",
-        start: "top bottom",
-        end: "center center",
-        scrub: 1.5,
-      }
-    });
-
-    // 2. Services stagger
-    gsap.from(".service-card", {
-      y: 100,
-      opacity: 0,
-      scale: 0.9,
-      stagger: 0.2,
-      scrollTrigger: {
-        trigger: "#services",
-        start: "top 70%",
-        end: "center center",
-        scrub: 1,
-      }
-    });
-
-    // 3. Contact form parallax
-    gsap.from(".contact-info", {
-      x: -50,
-      opacity: 0,
-      scrollTrigger: {
-        trigger: "#contact",
         start: "top 80%",
         end: "center center",
-        scrub: 1,
+        scrub: 2,
+      }
+    });
+
+    // 2. Services stagger reveal
+    gsap.from(".service-card", {
+      y: 150,
+      opacity: 0,
+      scale: 0.8,
+      stagger: 0.3,
+      scrollTrigger: {
+        trigger: "#services",
+        start: "top 80%",
+        end: "center center",
+        scrub: 2,
+      }
+    });
+
+    // 3. Contact section cinematic reveal
+    gsap.from(".contact-info", {
+      y: 100,
+      opacity: 0,
+      filter: "blur(10px)",
+      scrollTrigger: {
+        trigger: "#contact",
+        start: "top 90%",
+        end: "top 50%",
+        scrub: 2,
       }
     });
 
     gsap.from(".contact-form", {
-      x: 50,
+      scale: 0.9,
       opacity: 0,
+      y: 50,
       scrollTrigger: {
         trigger: "#contact",
         start: "top 80%",
-        end: "center center",
-        scrub: 1,
+        end: "top 40%",
+        scrub: 2,
       }
     });
   }, { scope: container });
@@ -159,42 +177,42 @@ export default function Home() {
                 className="space-y-10 about-text"
               >
                 <div className="space-y-4">
-                  <h2 className="text-[#FF5533] font-black tracking-[0.3em] text-sm uppercase flex items-center gap-3">
-                    <Sparkles size={16} /> Our Sacred Mission
+                  <h2 className="text-[#D6B36A] font-black tracking-[0.4em] text-xs uppercase flex items-center gap-3">
+                    <Sparkles size={14} className="gold-glow" /> Our Sacred Mission
                   </h2>
-                  <h3 className="text-5xl md:text-7xl font-[1000] tracking-[-0.05em] leading-[0.9] uppercase">
-                    A LIGHT IN <br /> <span className="text-white/20">SATTENAPALLE</span>
+                  <h3 className="text-5xl md:text-8xl font-serif tracking-tight leading-[0.9] uppercase text-[#FAF9F6]">
+                    A LIGHT IN <br /> <span className="text-white/5 italic">SATTENAPALLE</span>
                   </h3>
                 </div>
-                <p className="text-gray-400 leading-relaxed text-xl font-medium max-w-xl">
+                <p className="text-[#E5E7EB] leading-relaxed text-xl font-light max-w-xl">
                   St. Ann&apos;s RCM Church stands as a beacon of hope and faith. We are a Christ-centered community dedicated to worship, compassion, and the spiritual journey of every soul.
                 </p>
-                <div className="grid grid-cols-2 gap-10 pt-10">
+                <div className="grid grid-cols-2 gap-10 pt-10 border-t border-white/5">
                   <div className="group space-y-4">
-                    <div className="text-[#FF5533] font-black text-3xl tracking-tighter group-hover:translate-x-2 transition-transform">Eternal Faith</div>
-                    <p className="text-gray-500 text-sm font-bold uppercase tracking-widest leading-loose">Spiritual growth through the Holy Sacraments.</p>
+                    <div className="text-[#D4A24C] font-serif text-3xl tracking-tight group-hover:translate-x-2 transition-transform duration-700">Eternal Faith</div>
+                    <p className="text-[#9CA3AF] text-[10px] font-black uppercase tracking-[0.3em] leading-loose">Spiritual growth through the Holy Sacraments.</p>
                   </div>
                   <div className="group space-y-4">
-                    <div className="text-[#FF5533] font-black text-3xl tracking-tighter group-hover:translate-x-2 transition-transform">Divine Unity</div>
-                    <p className="text-gray-500 text-sm font-bold uppercase tracking-widest leading-loose">Experience the profound peace of our parish family.</p>
+                    <div className="text-[#D4A24C] font-serif text-3xl tracking-tight group-hover:translate-x-2 transition-transform duration-700">Divine Unity</div>
+                    <p className="text-[#9CA3AF] text-[10px] font-black uppercase tracking-[0.3em] leading-loose">Experience the profound peace of our parish family.</p>
                   </div>
                 </div>
               </motion.div>
 
               <motion.div className="about-image">
-                <TiltCard className="relative aspect-square group">
-                  <div className="absolute -inset-6 border-2 border-[#FF5533]/20 rounded-[3rem] -rotate-6 group-hover:rotate-0 transition-all duration-1000" />
-                  <div className="absolute inset-0 glass rounded-[3rem] overflow-hidden shadow-[0_0_50px_rgba(255,85,51,0.1)]">
+                <TiltCard className="relative aspect-[4/5] group">
+                  <div className="absolute -inset-4 border border-[#D6B36A]/20 rounded-[2rem] rotate-3 group-hover:rotate-0 transition-all duration-1000" />
+                  <div className="absolute inset-0 glass rounded-[2rem] overflow-hidden shadow-[0_0_80px_rgba(0,0,0,0.5)]">
                     <Image 
                       src="/pics/rosary.jpg" 
                       alt="Sacred Rosary" 
                       fill 
-                      className="object-cover opacity-50 grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-1000" 
+                      className="object-cover opacity-40 grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-[2000ms]" 
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
-                    <div className="relative h-full p-12 flex flex-col justify-end">
-                      <p className="text-[#FF5533] font-black italic text-2xl mb-4 leading-tight tracking-tighter">&ldquo;I can do all things through Christ who strengthens me.&rdquo;</p>
-                      <p className="text-white/30 text-xs font-black uppercase tracking-[0.5em]">— Philippians 4:13</p>
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#0F141B] via-transparent to-transparent" />
+                    <div className="relative h-full p-10 flex flex-col justify-end">
+                      <p className="text-[#D4A24C] font-serif italic text-2xl mb-6 leading-snug tracking-tight">&ldquo;I can do all things through Christ who strengthens me.&rdquo;</p>
+                      <p className="text-white/10 text-[10px] font-black uppercase tracking-[0.5em]">Philippians 4:13</p>
                     </div>
                   </div>
                 </TiltCard>
@@ -204,32 +222,33 @@ export default function Home() {
         </section>
 
         {/* Services Section */}
-        <section id="services" className="py-32 bg-black/50">
-          <div className="container mx-auto px-6">
+        <section id="services" className="py-40 bg-[#0F141B]/80 relative">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(155,184,255,0.03)_0%,_transparent_70%)]" />
+          <div className="container mx-auto px-6 relative z-10">
             <div className="text-center mb-24 space-y-4">
-              <h2 className="text-[#FF5533] font-black tracking-[0.3em] text-sm uppercase">Sacred Liturgy</h2>
-              <h3 className="text-5xl md:text-8xl font-[1000] tracking-[-0.05em] uppercase">Mass Timings</h3>
+              <h2 className="text-[#C46A2D] font-black tracking-[0.4em] text-xs uppercase">Sacred Liturgy</h2>
+              <h3 className="text-6xl md:text-9xl font-serif tracking-tight uppercase text-[#FAF9F6]">Mass Timings</h3>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {events.map((e, idx) => (
                 <motion.div
                   key={e.id || idx}
                   className="group service-card"
                 >
                   <TiltCard>
-                    <div className="glass p-10 rounded-[2.5rem] border-white/5 hover:border-[#FF5533]/50 transition-all h-full relative overflow-hidden flex flex-col justify-between">
+                    <div className="glass p-10 rounded-[3rem] border-white/5 hover:border-[#D6B36A]/30 transition-all duration-700 h-full relative overflow-hidden flex flex-col justify-between group">
                       <div>
-                        <div className="absolute top-0 right-0 w-32 h-32 bg-[#FF5533]/5 blur-[60px] group-hover:bg-[#FF5533]/20 transition-colors" />
-                        <Clock className="text-[#FF5533] mb-8 group-hover:scale-125 transition-transform duration-500" size={40} />
-                        <h4 className="text-2xl font-black mb-2 uppercase tracking-tighter">{e.date}</h4>
-                        <p className="text-[#FF5533] font-black text-2xl mb-4 tracking-[-0.02em]">{e.time}</p>
-                        <p className="text-white font-bold mb-2 uppercase tracking-widest">{e.title}</p>
-                        {e.description && <p className="text-gray-400 text-sm mb-4 line-clamp-3">{e.description}</p>}
+                        <div className="absolute top-0 right-0 w-32 h-32 bg-[#D4A24C]/5 blur-[60px] group-hover:bg-[#D4A24C]/10 transition-colors duration-700" />
+                        <Clock className="text-[#D4A24C] mb-10 group-hover:scale-110 group-hover:rotate-12 transition-all duration-700 opacity-60" size={32} />
+                        <h4 className="text-xl font-serif mb-3 tracking-wide text-[#FAF9F6]">{e.date}</h4>
+                        <p className="text-[#D4A24C] font-serif text-3xl mb-6 tracking-tight gold-glow">{e.time}</p>
+                        <p className="text-white/60 font-black text-[10px] uppercase tracking-[0.3em] mb-4">{e.title}</p>
+                        {e.description && <p className="text-[#9CA3AF] text-xs font-medium leading-relaxed line-clamp-3">{e.description}</p>}
                       </div>
                       {e.location && (
-                        <div className="flex items-center gap-2 text-gray-500 text-[10px] font-black uppercase tracking-[0.3em] mt-4 pt-4 border-t border-white/5">
-                          <MapPin size={12} className="text-[#FF5533]" />
+                        <div className="flex items-center gap-3 text-gray-600 text-[9px] font-black uppercase tracking-[0.3em] mt-8 pt-6 border-t border-white/5">
+                          <MapPin size={10} className="text-[#D6B36A]/50" />
                           <span>{e.location}</span>
                         </div>
                       )}
@@ -242,60 +261,85 @@ export default function Home() {
         </section>
 
         {/* Contact Section */}
-        <section id="contact" className="py-32 bg-transparent">
-          <div className="container mx-auto px-6">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-24">
-              <div className="space-y-16 contact-info">
-                <div className="space-y-6">
-                  <h2 className="text-[#FF5533] font-black tracking-[0.3em] text-sm uppercase">Divine Connection</h2>
-                  <h3 className="text-5xl md:text-8xl font-[1000] tracking-[-0.05em] leading-[0.9] uppercase">We Pray <br /> <span className="text-white/20">For You</span></h3>
-                  <p className="text-gray-400 text-xl font-medium leading-relaxed max-w-lg">
+        <section id="contact" className="py-40 relative overflow-hidden">
+          {/* Old Theme Background Picture (Mother Mary) */}
+          <div className="absolute inset-0 z-0 bg-[#0a0a0a]">
+            <Image 
+              src="/pics/mary.jpg"
+              alt="Sacred Background"
+              fill
+              className="object-cover opacity-10 grayscale brightness-50 contrast-125"
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-[#111111] via-transparent to-[#111111]" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(196,106,45,0.05)_0%,_transparent_70%)]" />
+          </div>
+
+          <div className="container mx-auto px-6 relative z-10">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-32">
+              <div className="space-y-20 contact-info">
+                <div className="space-y-8">
+                  <h2 className="text-[#C46A2D] font-black tracking-[0.4em] text-xs uppercase">Divine Connection</h2>
+                  <h3 className="text-6xl md:text-9xl font-serif tracking-tighter leading-[0.85] uppercase text-[#FAF9F6]">We Pray <br /> <span className="text-white/5 italic">For You</span></h3>
+                  <p className="text-[#E5E7EB] text-xl font-light leading-relaxed max-w-lg">
                     Whether you seek guidance or need prayer—reach out.
                   </p>
                 </div>
                 
-                <div className="grid gap-10">
-                  <div className="flex gap-8 items-center group">
-                    <div className="w-20 h-20 rounded-[2rem] glass border-[#FF5533]/20 flex items-center justify-center text-[#FF5533] group-hover:bg-[#FF5533] group-hover:text-black transition-all duration-500">
-                      <MapPin size={28} />
+                <div className="grid gap-12">
+                  <div className="flex gap-10 items-center group">
+                    <div className="w-16 h-16 rounded-full glass border-white/10 flex items-center justify-center text-[#D6B36A] group-hover:bg-[#D6B36A] group-hover:text-[#0F141B] transition-all duration-700 shadow-xl">
+                      <MapPin size={24} />
                     </div>
-                    <p className="text-white text-xl font-black tracking-tighter">Sattenapalle, AP 522403</p>
+                    <div className="space-y-1">
+                      <p className="text-white/40 text-[10px] font-black uppercase tracking-[0.3em]">Location</p>
+                      <p className="text-white text-xl font-serif tracking-wide">Sattenapalle, AP 522403</p>
+                    </div>
                   </div>
-                  <div className="flex gap-8 items-center group">
-                    <div className="w-20 h-20 rounded-[2rem] glass border-[#FF5533]/20 flex items-center justify-center text-[#FF5533] group-hover:bg-[#FF5533] group-hover:text-black transition-all duration-500">
-                      <Mail size={28} />
+                  <div className="flex gap-10 items-center group">
+                    <div className="w-16 h-16 rounded-full glass border-white/10 flex items-center justify-center text-[#D6B36A] group-hover:bg-[#D6B36A] group-hover:text-[#0F141B] transition-all duration-700 shadow-xl">
+                      <Mail size={24} />
                     </div>
-                    <p className="text-white text-xl font-black tracking-tighter">stannsrcm@gmail.com</p>
+                    <div className="space-y-1">
+                      <p className="text-[#D1D5DB] text-[10px] font-black uppercase tracking-[0.3em]">Email</p>
+                      <p className="text-[#FAF9F6] text-xl font-serif tracking-wide">stannsrcm@gmail.com</p>
+                    </div>
                   </div>
                 </div>
               </div>
 
               <motion.div 
-                className="glass p-12 rounded-[3.5rem] border-white/10 relative overflow-hidden contact-form"
+                className="glass p-16 rounded-[4rem] border-white/5 relative overflow-hidden contact-form shadow-2xl"
               >
                 {status.success ? (
                   <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="absolute inset-0 z-30 glass flex flex-col items-center justify-center text-center p-12">
-                    <CheckCircle2 size={100} className="text-[#FF5533] mb-8 animate-bounce" />
-                    <h4 className="text-4xl font-[1000] mb-4 tracking-tighter">REQUEST RECEIVED</h4>
-                    <button onClick={() => setStatus({ ...status, success: false })} className="mt-8 text-[#FF5533] uppercase tracking-[0.4em] text-[10px] font-black underline">Send Another</button>
+                    <CheckCircle2 size={80} className="text-[#D6B36A] mb-8" />
+                    <h4 className="text-3xl font-serif mb-4 tracking-tight">REQUEST RECEIVED</h4>
+                    <p className="text-[#D1D5DB] text-xs tracking-widest uppercase">Go in peace.</p>
+                    <button onClick={() => setStatus({ ...status, success: false })} className="mt-12 text-[#D6B36A] uppercase tracking-[0.4em] text-[9px] font-black underline decoration-[#D6B36A]/30 underline-offset-8">Send Another</button>
                   </motion.div>
                 ) : null}
 
-                {status.error && (
-                  <div className="p-4 bg-red-500/10 border border-red-500/50 rounded-2xl text-red-500 text-sm font-bold mb-6 text-center">
-                    {status.error}
+                <form onSubmit={handleSubmit} className="space-y-10">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                    <div className="space-y-2">
+                      <label className="text-[9px] font-black uppercase tracking-[0.3em] text-[#D1D5DB] ml-4">Full Name</label>
+                      <input type="text" name="name" required value={formData.name} onChange={handleInputChange} placeholder="St. Jude" className="w-full bg-white/[0.03] border border-white/5 rounded-2xl px-8 py-5 outline-none focus:border-[#D6B36A]/40 focus:bg-white/[0.05] transition-all font-medium text-white placeholder:text-white/10" />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-[9px] font-black uppercase tracking-[0.3em] text-white/30 ml-4">Email Address</label>
+                      <input type="email" name="email" required value={formData.email} onChange={handleInputChange} placeholder="faith@example.com" className="w-full bg-white/[0.03] border border-white/5 rounded-2xl px-8 py-5 outline-none focus:border-[#D6B36A]/40 focus:bg-white/[0.05] transition-all font-medium text-white placeholder:text-white/10" />
+                    </div>
                   </div>
-                )}
-
-                <form onSubmit={handleSubmit} className="space-y-8">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <input type="text" name="name" required value={formData.name} onChange={handleInputChange} placeholder="Name" className="w-full bg-white/[0.05] border border-white/10 rounded-3xl px-8 py-5 outline-none focus:border-[#FF5533]/50 transition-all font-bold" />
-                    <input type="email" name="email" required value={formData.email} onChange={handleInputChange} placeholder="Email" className="w-full bg-white/[0.05] border border-white/10 rounded-3xl px-8 py-5 outline-none focus:border-[#FF5533]/50 transition-all font-bold" />
+                  <div className="space-y-2">
+                    <label className="text-[9px] font-black uppercase tracking-[0.3em] text-white/30 ml-4">Subject</label>
+                    <input type="text" name="subject" required value={formData.subject} onChange={handleInputChange} placeholder="Prayer Request" className="w-full bg-white/[0.03] border border-white/5 rounded-2xl px-8 py-5 outline-none focus:border-[#D6B36A]/40 focus:bg-white/[0.05] transition-all font-medium text-white placeholder:text-white/10" />
                   </div>
-                  <input type="text" name="subject" required value={formData.subject} onChange={handleInputChange} placeholder="Subject" className="w-full bg-white/[0.05] border border-white/10 rounded-3xl px-8 py-5 outline-none focus:border-[#FF5533]/50 transition-all font-bold" />
-                  <textarea name="message" required rows={5} value={formData.message} onChange={handleInputChange} placeholder="Message" className="w-full bg-white/[0.05] border border-white/10 rounded-[2rem] px-8 py-6 outline-none focus:border-[#FF5533]/50 transition-all font-bold resize-none"></textarea>
-                  <button type="submit" disabled={status.loading} className="w-full py-6 rounded-3xl bg-[#FF5533] text-black font-[1000] uppercase tracking-[0.5em] text-sm shadow-[0_20px_50px_rgba(255,85,51,0.3)] hover:scale-[1.02] transition-all flex items-center justify-center gap-4 disabled:opacity-50 disabled:cursor-not-allowed">
-                    {status.loading ? <Loader2 className="animate-spin" /> : <><Send size={20} /> Submit</>}
+                  <div className="space-y-2">
+                    <label className="text-[9px] font-black uppercase tracking-[0.3em] text-white/30 ml-4">Your Message</label>
+                    <textarea name="message" required rows={4} value={formData.message} onChange={handleInputChange} placeholder="How can we pray for you?" className="w-full bg-white/[0.03] border border-white/5 rounded-3xl px-8 py-6 outline-none focus:border-[#D6B36A]/40 focus:bg-white/[0.05] transition-all font-medium text-white placeholder:text-white/10 resize-none"></textarea>
+                  </div>
+                  <button type="submit" disabled={status.loading} className="w-full py-6 rounded-2xl bg-[#D6B36A] text-[#0F141B] font-black uppercase tracking-[0.4em] text-[11px] shadow-[0_20px_50px_rgba(214,179,106,0.2)] hover:scale-[1.01] hover:shadow-[0_25px_60px_rgba(214,179,106,0.3)] transition-all duration-500 flex items-center justify-center gap-4 disabled:opacity-50 disabled:cursor-not-allowed group">
+                    {status.loading ? <Loader2 className="animate-spin" /> : <><Send size={16} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" /> Submit Request</>}
                   </button>
                 </form>
               </motion.div>
