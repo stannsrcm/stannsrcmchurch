@@ -19,32 +19,32 @@ const vertexShader = `
   varying float vOpacity;
 
   void main() {
-    // Lerp between initial dust cloud and cathedral shape
+    // GPU Lerp for 120,000 particles
     vec3 pos = mix(aInitialPosition, position, uProgress);
 
-    // Vortex effect during transition
-    float angle = uTime * 0.5 + aDelay * 10.0;
+    // Cinematic Vortex
+    float angle = uTime * 0.4 + aDelay * 8.0;
     float dist = length(pos.xz);
-    float vortex = uVortexStrength * (1.0 - uProgress) * 5.0;
-    pos.x += cos(angle + dist * 0.5) * vortex;
-    pos.z += sin(angle + dist * 0.5) * vortex;
+    float vortex = uVortexStrength * (1.0 - uProgress) * 6.0;
+    pos.x += cos(angle + dist * 0.4) * vortex;
+    pos.z += sin(angle + dist * 0.4) * vortex;
 
-    // Organic breathing motion
-    pos.y += sin(uTime * 0.5 + aDelay * 20.0) * 0.15;
+    // Sacred Breathing
+    pos.y += sin(uTime * 0.6 + aDelay * 15.0) * 0.12;
     
-    // Mouse Interaction
-    float mouseDist = distance(pos.xy, uMouse * 15.0);
-    if (mouseDist < 3.0) {
-      pos += normalize(pos - vec3(uMouse * 15.0, 0.0)) * (3.0 - mouseDist) * 0.8;
+    // Interactive Mouse Dispersion
+    float mouseDist = distance(pos.xy, uMouse * 18.0);
+    if (mouseDist < 3.5) {
+      pos += normalize(pos - vec3(uMouse * 18.0, 0.0)) * (3.5 - mouseDist) * 1.0;
     }
 
     vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
-    gl_PointSize = aSize * (400.0 / -mvPosition.z);
+    gl_PointSize = aSize * (350.0 / -mvPosition.z);
     gl_Position = projectionMatrix * mvPosition;
 
     vColor = aColor;
-    vOpacity = mix(0.1, 0.8, uProgress);
-    vOpacity *= 0.7 + 0.3 * sin(uTime * 1.5 + aDelay * 10.0);
+    vOpacity = mix(0.1, 0.9, uProgress);
+    vOpacity *= 0.75 + 0.25 * sin(uTime * 2.0 + aDelay * 12.0);
   }
 `;
 
@@ -56,13 +56,13 @@ const fragmentShader = `
     float d = distance(gl_PointCoord, vec2(0.5));
     if (d > 0.5) discard;
     
-    float strength = 0.1 / d - 0.2;
+    float strength = 0.12 / d - 0.24;
     gl_FragColor = vec4(vColor, vOpacity * strength);
   }
 `;
 
 export default function ParticleChurch({ progress = 0, vortex = 0 }) {
-  const count = 70000;
+  const count = 120000;
   const meshRef = useRef<THREE.Points>(null);
 
   const cathedralData = useMemo(() => {
@@ -72,112 +72,133 @@ export default function ParticleChurch({ progress = 0, vortex = 0 }) {
     const sizes = new Float32Array(count);
     const delays = new Float32Array(count);
 
-    // Colors from user's request
-    const colorPink = new THREE.Color('#e0a0a0'); // Pink Bricks
-    const colorGrey = new THREE.Color('#808080'); // Stone
-    const colorBlue = new THREE.Color('#4aa3df');  // Windows/Dome
-    const colorGold = new THREE.Color('#d4af37'); // Statue/Details
-    const colorRoof = new THREE.Color('#c05c50'); // Tower roof accent
+    // Cathedral Color Palette
+    const WARM_STONE = new THREE.Color('#d4a574');
+    const DARK_STONE = new THREE.Color('#8b7355');
+    const ROOF_RED = new THREE.Color('#b53b2a');
+    const STAINED_BLUE = new THREE.Color('#3a6ea5');
+    const GOLD = new THREE.Color('#e8c547');
+    const WINDOW_LIGHT = new THREE.Color('#7ec8e0');
+    const DOOR_WOOD = new THREE.Color('#6b3a2a');
 
     let idx = 0;
 
-    const addPoint = (x: number, y: number, z: number, color: THREE.Color) => {
+    const addParticle = (x: number, y: number, z: number, color: THREE.Color) => {
       if (idx >= count) return;
       
       const i3 = idx * 3;
       positions[i3] = x;
-      positions[i3 + 1] = y;
+      positions[i3 + 1] = y - 4; // Vertical offset
       positions[i3 + 2] = z;
 
-      // Start Position (Random Sphere Cloud)
-      const r = 60 * Math.cbrt(Math.random());
-      const theta = Math.random() * 2 * Math.PI;
+      const radius = 50 * Math.pow(Math.random(), 1.6);
+      const theta = Math.random() * Math.PI * 2;
       const phi = Math.acos(2 * Math.random() - 1);
-      initialPositions[i3] = r * Math.sin(phi) * Math.cos(theta);
-      initialPositions[i3 + 1] = r * Math.sin(phi) * Math.sin(theta);
-      initialPositions[i3 + 2] = r * Math.cos(phi);
+      initialPositions[i3] = radius * Math.sin(phi) * Math.cos(theta);
+      initialPositions[i3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
+      initialPositions[i3 + 2] = radius * Math.cos(phi);
 
       colors[i3] = color.r;
       colors[i3 + 1] = color.g;
       colors[i3 + 2] = color.b;
 
-      sizes[idx] = Math.random() * 0.8 + 0.2;
+      sizes[idx] = Math.random() * 0.7 + 0.2;
       delays[idx] = Math.random();
       idx++;
     };
 
-    const fillVolume = (ox: number, oy: number, oz: number, w: number, h: number, d: number, color: THREE.Color, density: number) => {
-      const step = 0.4; 
-      for (let x = ox; x < ox + w; x += step) {
-        for (let y = oy; y < oy + h; y += step) {
-          for (let z = oz; z < oz + d; z += step) {
-            if (Math.random() < density && idx < count) {
-              const noise = (Math.random() - 0.5) * 0.25;
-              addPoint(x + noise, y + noise, z + noise, color);
+    // 1. MAIN NAVE (Central Hall)
+    for (let x = -6; x <= 6; x += 0.3) {
+      for (let z = -10; z <= 8; z += 0.3) {
+        for (let y = 0; y <= 8; y += 0.3) {
+          if ((Math.abs(x) > 5.7 || Math.abs(z) > 9.7 || z > 7.7) && Math.random() < 0.4) {
+            addParticle(x, y, z, WARM_STONE);
+          }
+        }
+      }
+    }
+
+    // 2. TOWERS
+    const towerPositions = [[-5.5, 0, -9.5], [5.5, 0, -9.5]];
+    towerPositions.forEach(([tx, ty, tz]) => {
+      for (let y = 0; y <= 20; y += 0.3) {
+        for (let x = -1.4; x <= 1.4; x += 0.3) {
+          for (let z = -1.4; z <= 1.4; z += 0.3) {
+            if ((Math.abs(x) > 1.2 || Math.abs(z) > 1.2) && Math.random() < 0.5) {
+              const isSpire = y > 16;
+              addParticle(tx + x, y, tz + z, isSpire ? GOLD : WARM_STONE);
             }
           }
         }
       }
-    };
-
-    // --- 1. Main Building (Pink Brick Walls) ---
-    fillVolume(-8, -6, -6, 16, 12, 14, colorPink, 0.4);
-    fillVolume(-7.5, -6, -6, 1.5, 14, 14, colorGrey, 0.5);
-    fillVolume(6, -6, -6, 1.5, 14, 14, colorGrey, 0.5);
-
-    // --- 2. Blue Cross Windows ---
-    const createCross = (cx: number, cy: number, cz: number, scale: number) => {
-      const t = 0.2 * scale;
-      const l = 1.2 * scale;
-      fillVolume(cx - t/2, cy - l/2, cz, t, l, 0.3, colorBlue, 0.9);
-      fillVolume(cx - l/2, cy - t/2, cz, l, t, 0.3, colorBlue, 0.9);
-    };
-    createCross(0, 0, -5.8, 4);
-    createCross(-8, -2, 0, 2);
-    createCross(8, -2, 0, 2);
-
-    // --- 3. Tower with Spiral Staircase (Left) ---
-    fillVolume(-14, -6, -4, 6, 22, 10, colorGrey, 0.35);
-    const stairRadius = 2.5;
-    const towerX = -11;
-    const towerZ = 0;
-    for (let y = -5; y < 15; y += 0.3) {
-      const angle = y * 1.5;
-      const sx = towerX + Math.cos(angle) * stairRadius;
-      const sz = towerZ + Math.sin(angle) * stairRadius;
-      for(let r=0; r<0.5; r+=0.15) {
-         addPoint(sx + (Math.random()-0.5)*0.3, y, sz + (Math.random()-0.5)*0.3, colorGold);
+      // Spire tip & Cross
+      for (let y = 20; y <= 24; y += 0.2) {
+        const rad = (24 - y) * 0.4;
+        for (let a = 0; a < Math.PI * 2; a += 0.4) {
+          if (Math.random() < 0.6) addParticle(tx + Math.cos(a) * rad, y, tz + Math.sin(a) * rad, GOLD);
+        }
       }
-    }
-    fillVolume(-14, 16, -4, 6, 3, 10, colorRoof, 0.5);
-    createCross(-11, 20, 0, 2.5);
+      addParticle(tx, 25, tz, GOLD); // Cross
+    });
 
-    // --- 4. Blue Dome with Jesus Statue (Center-Back) ---
-    const domeCx = 0, domeCy = 6, domeCz = 4;
-    const domeR = 6;
-    for (let phi = 0; phi <= Math.PI / 2; phi += 0.2) {
-      for (let theta = 0; theta <= Math.PI * 2; theta += 0.2) {
-        const r = domeR * Math.sin(phi);
-        const y = domeR * Math.cos(phi);
-        const x = r * Math.cos(theta);
-        const z = r * Math.sin(theta);
-        if (Math.random() < 0.4) {
-          addPoint(domeCx + x, domeCy + y, domeCz + z, colorBlue);
+    // 3. ROSE WINDOW
+    const roseCenter = [0, 8, -9.5];
+    for (let r = 0; r <= 3; r += 0.2) {
+      for (let a = 0; a < Math.PI * 2; a += 0.2) {
+        if (Math.random() < 0.7) {
+          addParticle(roseCenter[0] + Math.cos(a) * r, roseCenter[1] + Math.sin(a) * r, roseCenter[2], STAINED_BLUE);
         }
       }
     }
-    fillVolume(-0.5, domeCy + domeR, domeCz, 1, 1, 1, colorGold, 0.7);
-    fillVolume(-0.2, domeCy + domeR + 1, domeCz, 0.4, 4, 0.4, colorGold, 0.9);
-    addPoint(0, domeCy + domeR + 5.5, domeCz, colorGold);
 
-    // Ground Debris
+    // 4. POINTED ARCH DOOR
+    for (let y = 0; y <= 5; y += 0.2) {
+      const width = 1.5 * (1 - y / 6);
+      for (let x = -width; x <= width; x += 0.2) {
+        if (Math.random() < 0.6) addParticle(x, y, -9.8, DOOR_WOOD);
+      }
+    }
+
+    // 5. FLYING BUTTRESSES
+    const buttressPos = [[-6, 5, -5], [6, 5, -5], [-6, 5, 3], [6, 5, 3]];
+    buttressPos.forEach(([bx, by, bz]) => {
+      for (let t = 0; t <= 1; t += 0.05) {
+        const x = bx + (bx > 0 ? 3 : -3) * t;
+        const y = by - 5 * t * (1 - t);
+        if (Math.random() < 0.5) addParticle(x, y + (by - y) * t, bz, DARK_STONE);
+      }
+    });
+
+    // 6. CENTRAL SPIRE
+    for (let y = 8; y <= 18; y += 0.3) {
+      const rad = 2 * (1 - (y - 8) / 12);
+      for (let a = 0; a < Math.PI * 2; a += 0.3) {
+        if (Math.random() < 0.5) addParticle(Math.cos(a) * rad, y, 0, y > 15 ? GOLD : ROOF_RED);
+      }
+    }
+
+    // 7. ROOF
+    for (let x = -6; x <= 6; x += 0.3) {
+      const roofY = 8 + (1 - Math.abs(x) / 6) * 4;
+      for (let z = -9; z <= 7; z += 0.3) {
+        if (Math.random() < 0.4) addParticle(x, roofY, z, ROOF_RED);
+      }
+    }
+
+    // 8. BELLS & DETAILS
+    towerPositions.forEach(([bx, by, bz]) => {
+      for (let i = 0; i < 6; i++) {
+        addParticle(bx, 14 + i * 0.5, bz, GOLD);
+      }
+    });
+
+    // Atmospheric Dust Floor
     while (idx < count) {
-        const r = 30 + Math.random() * 30;
-        const theta = Math.random() * Math.PI * 2;
-        const x = Math.cos(theta) * r;
-        const z = Math.sin(theta) * r;
-        const groundColor = Math.random() > 0.5 ? new THREE.Color('#2d4c1e') : new THREE.Color('#555555');
-        addPoint(x, -6 + Math.random(), z, groundColor);
+      const r = 40 + Math.random() * 40;
+      const theta = Math.random() * Math.PI * 2;
+      const x = Math.cos(theta) * r;
+      const z = Math.sin(theta) * r;
+      addParticle(x, 0, z, new THREE.Color('#333333'));
     }
 
     return { positions, initialPositions, colors, sizes, delays };
@@ -198,7 +219,7 @@ export default function ParticleChurch({ progress = 0, vortex = 0 }) {
       material.uniforms.uVortexStrength.value = THREE.MathUtils.lerp(material.uniforms.uVortexStrength.value, vortex, 0.05);
       material.uniforms.uMouse.value.lerp(state.mouse, 0.1);
       
-      meshRef.current.rotation.y = state.mouse.x * 0.15;
+      meshRef.current.rotation.y = state.mouse.x * 0.12;
     }
   });
 
