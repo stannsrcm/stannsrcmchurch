@@ -102,8 +102,10 @@ export default function ParticleChurch({ progress = 0, vortex = 0 }) {
       colors[i3 + 1] = color.g;
       colors[i3 + 2] = color.b;
 
-      sizes[idx] = Math.random() * 0.7 + 0.2;
-      delays[idx] = Math.random();
+      // Sacred White particles (Crosses) are larger and brighter
+      const isCross = color.r > 0.9 && color.g > 0.9 && color.b > 0.9;
+      sizes[idx] = isCross ? Math.random() * 2.0 + 1.0 : Math.random() * 0.7 + 0.2;
+      delays[idx] = isCross ? 0 : Math.random(); // No delay for crosses to form first
       idx++;
     };
 
@@ -148,6 +150,22 @@ export default function ParticleChurch({ progress = 0, vortex = 0 }) {
         if (Math.random() < 0.7) {
           addParticle(roseCenter[0] + Math.cos(a) * r, roseCenter[1] + Math.sin(a) * r, roseCenter[2], STAINED_BLUE);
         }
+      }
+    }
+
+    // 3.1 LARGE CENTRAL CRUCIFIX (Sacred White)
+    const SACRED_WHITE = new THREE.Color('#ffffff');
+    const crucifixPos = [0, 15, -9.8]; // Above Rose Window
+    // Vertical Beam
+    for (let y = 12; y <= 19; y += 0.1) {
+      for (let j = 0; j < 5; j++) {
+        addParticle(crucifixPos[0] + (Math.random()-0.5)*0.15, y, crucifixPos[2], SACRED_WHITE);
+      }
+    }
+    // Horizontal Beam
+    for (let x = -2; x <= 2; x += 0.1) {
+      for (let j = 0; j < 5; j++) {
+        addParticle(x, 17, crucifixPos[2], SACRED_WHITE);
       }
     }
 
