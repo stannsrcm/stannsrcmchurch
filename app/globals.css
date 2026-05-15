@@ -51,7 +51,22 @@
     scrollbar-width: none;
   }
 
-  .cinematic-overlay {
+  /* Filmic Noise/Grain Overlay - Trending 3D Aesthetic */
+body::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.05;
+  background-image: url("https://grainy-gradients.vercel.app/noise.svg");
+  filter: contrast(150%) brightness(150%);
+}
+
+.cinematic-overlay {
     background: radial-gradient(circle at center, transparent 0%, rgba(15, 20, 27, 0.8) 100%);
   }
 }

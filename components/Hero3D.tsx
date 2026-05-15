@@ -5,7 +5,20 @@ import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
 import { Stars, OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
 import { motion } from "framer-motion";
-import { FloatingParticles } from "./Atmosphere3D";
+import { FloatingParticles, SacredGeometry } from "./Atmosphere3D";
+
+const MouseLight = () => {
+  const lightRef = useRef<THREE.PointLight>(null);
+  useFrame((state) => {
+    if (lightRef.current) {
+      const { mouse, viewport } = state;
+      const x = (mouse.x * viewport.width) / 2;
+      const y = (mouse.y * viewport.height) / 2;
+      lightRef.current.position.set(x, y, 2);
+    }
+  });
+  return <pointLight ref={lightRef} intensity={50} color="#F6D28B" distance={15} decay={2} />;
+};
 
 const ScrollCamera = () => {
   const { camera } = useThree();
@@ -88,8 +101,10 @@ const Hero3D = () => {
             <spotLight position={[0, 10, -5]} intensity={500} color="#F6D28B" angle={0.6} penumbra={1} />
             <pointLight position={[-10, -5, 5]} intensity={150} color="#C46A2D" />
             <pointLight position={[10, 5, -10]} intensity={200} color="#D4A24C" />
+            <MouseLight />
+            <SacredGeometry count={8} />
             <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={0.2} />
-            <FloatingParticles count={800} color="#F6D28B" />
+            <FloatingParticles count={1000} color="#F6D28B" />
             <ScrollCamera />
           </Canvas>
         ) : null}
