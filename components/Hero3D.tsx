@@ -6,6 +6,7 @@ import { Stars, OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
 import { motion } from "framer-motion";
 import { FloatingParticles, SacredGeometry } from "./Atmosphere3D";
+import { Camera } from "lucide-react";
 
 const MouseLight = () => {
   const lightRef = useRef<THREE.PointLight>(null);
@@ -31,14 +32,11 @@ const ScrollCamera = () => {
     const maxScroll = document.body.scrollHeight - window.innerHeight;
     const progress = maxScroll > 0 ? scrollY / maxScroll : 0;
     
-    // Cinematic Drift - subtle constant motion
     const t = state.clock.getElapsedTime();
     const driftX = Math.sin(t * 0.2) * 0.5;
     const driftY = Math.cos(t * 0.2) * 0.3;
 
-    // Zoom into the scene
     targetZ.current = 12 - progress * 4;
-    // Pan slightly
     targetY.current = -progress * 2 + driftY;
     targetX.current = -progress * 1 + driftX;
     
@@ -63,7 +61,11 @@ const BackgroundPlane = () => {
   );
 };
 
-const Hero3D = () => {
+interface Hero3DProps {
+  onOpenTour: () => void;
+}
+
+const Hero3D = ({ onOpenTour }: Hero3DProps) => {
   const [webGLSupported, setWebGLSupported] = useState(true);
 
   useEffect(() => {
@@ -78,7 +80,6 @@ const Hero3D = () => {
           return;
         }
 
-        // Test if we can actually create a renderer context
         const testGL = canvas.getContext("webgl");
         if (!testGL) {
           setWebGLSupported(false);
@@ -168,7 +169,7 @@ const Hero3D = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 1.5 }}
-            className="pt-10 md:pt-16 pointer-events-auto"
+            className="pt-10 md:pt-16 pointer-events-auto flex flex-col md:flex-row items-center justify-center gap-6"
           >
             <a
               href="#about"
@@ -179,6 +180,16 @@ const Hero3D = () => {
                 Explore the Sanctuary
               </span>
             </a>
+
+            <button
+              onClick={onOpenTour}
+              className="group relative inline-flex items-center justify-center px-10 md:px-16 py-4 md:py-6 overflow-hidden glass rounded-full transition-all duration-500 border border-[#D6B36A]/30 hover:border-[#D6B36A]"
+            >
+              <div className="absolute inset-0 bg-white/5 translate-y-full group-hover:translate-y-0 transition-transform duration-700 ease-in-out" />
+              <span className="relative text-[9px] md:text-[10px] uppercase tracking-[0.4em] md:tracking-[0.6em] font-black text-[#D6B36A] transition-colors duration-500 flex items-center gap-3">
+                Experience 360° Sanctuary <Camera size={14} className="group-hover:rotate-12 transition-transform" />
+              </span>
+            </button>
           </motion.div>
         </div>
       </div>
