@@ -26,7 +26,6 @@ export default function RootLayout({
       <body className={inter.className}>
         <Providers>
           <CinematicIntro />
-          <GlobalScene3D />
           <AudioPlayer />
           <Navigation />
           <main>{children}</main>

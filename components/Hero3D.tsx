@@ -70,8 +70,22 @@ const Hero3D = () => {
     const checkWebGL = () => {
       try {
         const canvas = document.createElement("canvas");
-        const gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
-        setWebGLSupported(!!gl);
+        const gl = canvas.getContext("webgl", { failIfMajorPerformanceCaveat: true }) || 
+                   canvas.getContext("experimental-webgl", { failIfMajorPerformanceCaveat: true });
+        
+        if (!gl) {
+          setWebGLSupported(false);
+          return;
+        }
+
+        // Test if we can actually create a renderer context
+        const testGL = canvas.getContext("webgl");
+        if (!testGL) {
+          setWebGLSupported(false);
+          return;
+        }
+
+        setWebGLSupported(true);
       } catch (e) {
         setWebGLSupported(false);
       }
@@ -107,7 +121,18 @@ const Hero3D = () => {
             <FloatingParticles count={1000} color="#F6D28B" />
             <ScrollCamera />
           </Canvas>
-        ) : null}
+        ) : (
+          <div 
+            className="absolute inset-0 bg-[#111111] grayscale brightness-[0.3]"
+            style={{ 
+              backgroundImage: 'url(/pics/gallery_exterior_full.jpg)',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center'
+            }}
+          >
+            <div className="absolute inset-0 bg-gradient-to-b from-[#111111] via-transparent to-[#111111]" />
+          </div>
+        )}
       </div>
 
       <div className="absolute inset-0 z-20 flex flex-col items-center justify-center pointer-events-none pt-20 md:pt-0">

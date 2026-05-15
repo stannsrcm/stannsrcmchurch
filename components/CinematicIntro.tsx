@@ -9,13 +9,24 @@ import { Sparkles, MousePointer2 } from "lucide-react";
 export default function CinematicIntro() {
   const [isVisible, setIsVisible] = useState(true);
   const [hasStarted, setHasStarted] = useState(false);
-  const [sequence, setSequence] = useState<"dark" | "vortex" | "forming" | "complete">("dark");
-  const [progress, setProgress] = useState(0);
-  const [vortex, setVortex] = useState(0.05);
-  const bellsRef = useRef<HTMLAudioElement>(null);
+  const [webGLSupported, setWebGLSupported] = useState(true);
 
   useEffect(() => {
-    if (hasStarted) {
+    try {
+      const canvas = document.createElement("canvas");
+      const gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
+      if (!gl) {
+        setIsVisible(false);
+        setWebGLSupported(false);
+      }
+    } catch (e) {
+      setIsVisible(false);
+      setWebGLSupported(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (hasStarted && webGLSupported) {
       // Sequence timing
       const timers = [
         setTimeout(() => setSequence("vortex"), 1000),
@@ -31,7 +42,7 @@ export default function CinematicIntro() {
 
       return () => timers.forEach(t => clearTimeout(t));
     }
-  }, [hasStarted]);
+  }, [hasStarted, webGLSupported]);
 
   const handleStart = () => {
     setHasStarted(true);
@@ -39,7 +50,7 @@ export default function CinematicIntro() {
     if (bellsRef.current) bellsRef.current.play().catch(() => {});
   };
 
-  if (!isVisible) return null;
+  if (!isVisible || !webGLSupported) return null;
 
   return (
     <motion.div
