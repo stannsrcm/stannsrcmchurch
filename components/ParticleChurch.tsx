@@ -65,7 +65,7 @@ const fragmentShader = `
 `;
 
 export default function ParticleChurch({ progress = 0, vortex = 0 }) {
-  const count = 15000;
+  const count = 30000;
   const meshRef = useRef<THREE.Points>(null);
   const { viewport } = useThree();
 
@@ -78,66 +78,69 @@ export default function ParticleChurch({ progress = 0, vortex = 0 }) {
     for (let i = 0; i < count; i++) {
       const i3 = i * 3;
 
-      // Random initial positions (chaos)
-      randomPositions[i3] = (Math.random() - 0.5) * 50;
-      randomPositions[i3 + 1] = (Math.random() - 0.5) * 50;
-      randomPositions[i3 + 2] = (Math.random() - 0.5) * 50;
+      // Random initial positions (chaos) - wider spread
+      randomPositions[i3] = (Math.random() - 0.5) * 60;
+      randomPositions[i3 + 1] = (Math.random() - 0.5) * 60;
+      randomPositions[i3 + 2] = (Math.random() - 0.5) * 60;
 
-      // Precise St. Ann's Church Structure Generation
+      // SHARP St. Ann's Church Structure Generation
       let tx = 0, ty = 0, tz = 0;
       const type = Math.random();
 
-      if (type < 0.35) {
-        // Main Horizontal Body & Arches (Center-Right)
-        tx = Math.random() * 8 - 2; // Offset to right
-        ty = Math.random() * 5 - 4;
-        tz = (Math.random() - 0.5) * 3;
-        // Arches detail
-        if (Math.random() > 0.8) {
-          tx = Math.floor(tx / 1.5) * 1.5; // Snap to arch intervals
-          ty += Math.sin(Math.random() * Math.PI) * 0.5;
+      if (type < 0.4) {
+        // Main Body Walls (Center-Right)
+        tx = Math.random() * 10 - 3; 
+        ty = Math.random() * 4 - 4;
+        tz = (Math.random() > 0.5 ? 1 : -1) * 2; // Front and back walls
+        // Windows/Arches (Cutouts/Highlights)
+        if (Math.random() > 0.7) {
+          tx = Math.floor(tx / 1.5) * 1.5; // Sharp alignment
+          ty = Math.random() * 2 - 2;
+          tz *= 1.1;
         }
-      } else if (type < 0.55) {
-        // Left Bell Tower
-        tx = -5 + (Math.random() - 0.5) * 1.5;
-        const towerHeight = Math.random() * 12 - 4;
-        ty = towerHeight;
-        tz = (Math.random() - 0.5) * 1.5;
-        // Top Cross on Tower
-        if (ty > 7) {
-           tx = -5 + (Math.random() - 0.5) * 0.1;
+      } else if (type < 0.6) {
+        // High Definition Bell Tower (Left)
+        tx = -6 + (Math.random() - 0.5) * 1.8;
+        ty = Math.random() * 14 - 4;
+        tz = (Math.random() - 0.5) * 1.8;
+        // Sharpen the spire
+        if (ty > 8) {
+          const t = (ty - 8) / 6;
+          tx = -6 + (Math.random() - 0.5) * (1.8 * (1.0 - t));
+          tz = (Math.random() - 0.5) * (1.8 * (1.0 - t));
         }
-      } else if (type < 0.75) {
-        // Central Dome / Conical Roof
+      } else if (type < 0.8) {
+        // Sharp Central Dome & Statue
         const angle = Math.random() * Math.PI * 2;
-        const radius = Math.random() * 2 * (1.0 - (Math.random() * 0.5)); // Tapered
+        const radius = Math.random() * 2.5;
+        const domeHeight = Math.sqrt(Math.max(0, 2.5 * 2.5 - radius * radius)); // Hemispherical
         tx = 2 + Math.cos(angle) * radius;
-        ty = 1 + Math.random() * 4;
+        ty = 0 + domeHeight;
         tz = Math.sin(angle) * radius;
-        // Statue on top of Dome
-        if (ty > 4.5) {
-          tx = 2 + (Math.random() - 0.5) * 0.2;
-          ty = 5 + Math.random() * 1;
+        
+        // Statue of Christ (Top)
+        if (Math.random() > 0.95) {
+          tx = 2 + (Math.random() - 0.5) * 0.1;
+          ty = 3 + Math.random() * 2.5;
+          tz = (Math.random() - 0.5) * 0.1;
         }
-      } else if (type < 0.9) {
-        // Right Gabled Wing
-        tx = 7 + (Math.random() - 0.5) * 2;
-        const gHeight = Math.random() * 6 - 4;
-        // Triangular top
-        const peak = 1.0 - Math.abs(tx - 7) / 1.0;
-        ty = gHeight + peak * 2;
-        tz = (Math.random() - 0.5) * 2;
+      } else if (type < 0.95) {
+        // Right Wing (Gabled Structure)
+        tx = 8 + (Math.random() - 0.5) * 3;
+        const peak = 1.0 - Math.abs(tx - 8) / 1.5;
+        ty = Math.random() * (4 + peak * 3) - 4;
+        tz = (Math.random() - 0.5) * 2.5;
       } else {
-        // Crosses & Fine Detail (Highest Density)
+        // Sharp Crosses (The most defined parts)
         const crossType = Math.random();
-        if (crossType < 0.4) {
-          // Cross on Left Tower
-          tx = -5 + (Math.random() - 0.5) * (Math.random() > 0.5 ? 1.5 : 0.1);
-          ty = 7.5 + (Math.random() > 0.5 ? 0 : Math.random() * 1.5);
-        } else if (crossType < 0.8) {
-          // Cross on Right Wing
-          tx = 7 + (Math.random() - 0.5) * (Math.random() > 0.5 ? 1.0 : 0.1);
-          ty = 4.5 + (Math.random() > 0.5 ? 0 : Math.random() * 1.0);
+        if (crossType < 0.5) {
+          // Tower Cross
+          tx = -6 + (Math.random() - 0.5) * (Math.random() > 0.4 ? 1.5 : 0.05);
+          ty = 13.5 + (Math.random() > 0.4 ? 0 : Math.random() * 2.0);
+        } else {
+          // Right Wing Cross
+          tx = 8 + (Math.random() - 0.5) * (Math.random() > 0.4 ? 1.0 : 0.05);
+          ty = 6.5 + (Math.random() > 0.4 ? 0 : Math.random() * 1.5);
         }
         tz = 0;
       }
