@@ -90,7 +90,7 @@ const Hero3D = () => {
       <div className="fixed inset-0 z-[-1] pointer-events-none">
         {webGLSupported ? (
           <Canvas 
-            camera={{ position: [0, 0, 12], fov: 35 }} 
+            camera={{ position: [0, 0, 12], fov: typeof window !== 'undefined' && window.innerWidth < 768 ? 45 : 35 }} 
             gl={{ antialias: true, alpha: true }}
             onCreated={({ gl }) => gl.setClearColor(0x111111, 1)}
           >
@@ -110,8 +110,8 @@ const Hero3D = () => {
         ) : null}
       </div>
 
-      <div className="absolute inset-0 z-20 flex flex-col items-center justify-center pointer-events-none pt-20">
-        <div className="text-center space-y-12 px-6 max-w-6xl">
+      <div className="absolute inset-0 z-20 flex flex-col items-center justify-center pointer-events-none pt-20 md:pt-0">
+        <div className="text-center space-y-8 md:space-y-12 px-6 max-w-6xl">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -119,7 +119,7 @@ const Hero3D = () => {
             className="space-y-4"
           >
             <h1 
-              className="text-5xl md:text-8xl lg:text-[7rem] font-serif tracking-tight uppercase leading-[0.8] select-none text-white drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
+              className="text-4xl sm:text-5xl md:text-8xl lg:text-[7rem] font-serif tracking-tight uppercase leading-[0.9] md:leading-[0.8] select-none text-white drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
             >
               ST. ANN&apos;S <br />
               <span className="text-[#D6B36A]/80 gold-glow">RCM CHURCH</span>
@@ -130,27 +130,27 @@ const Hero3D = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 2, delay: 1 }}
-            className="flex items-center justify-center gap-6"
+            className="flex items-center justify-center gap-4 md:gap-6"
           >
-            <div className="h-[1px] w-12 bg-white/10" />
-            <p className="text-sm md:text-lg text-white/40 font-light tracking-[0.8em] uppercase">
+            <div className="h-[1px] w-8 md:w-12 bg-white/10" />
+            <p className="text-[10px] md:text-lg text-white/40 font-light tracking-[0.4em] md:tracking-[0.8em] uppercase">
               Faith • Community • Grace
             </p>
-            <div className="h-[1px] w-12 bg-white/10" />
+            <div className="h-[1px] w-8 md:w-12 bg-white/10" />
           </motion.div>
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 1.5 }}
-            className="pt-16 pointer-events-auto"
+            className="pt-10 md:pt-16 pointer-events-auto"
           >
             <a
               href="#about"
-              className="group relative inline-flex items-center justify-center px-16 py-6 overflow-hidden glass rounded-full transition-all duration-500 border border-white/5 hover:border-[#D6B36A]/50"
+              className="group relative inline-flex items-center justify-center px-10 md:px-16 py-4 md:py-6 overflow-hidden glass rounded-full transition-all duration-500 border border-white/5 hover:border-[#D6B36A]/50"
             >
               <div className="absolute inset-0 bg-[#D6B36A] translate-y-full group-hover:translate-y-0 transition-transform duration-700 ease-in-out" />
-              <span className="relative text-[10px] uppercase tracking-[0.6em] font-black text-white group-hover:text-[#0F141B] transition-colors duration-500">
+              <span className="relative text-[9px] md:text-[10px] uppercase tracking-[0.4em] md:tracking-[0.6em] font-black text-white group-hover:text-[#0F141B] transition-colors duration-500">
                 Explore the Sanctuary
               </span>
             </a>

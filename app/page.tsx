@@ -260,6 +260,76 @@ export default function Home() {
           </div>
         </section>
 
+        {/* Visit Us Section (Map) */}
+        <section id="location" className="py-40 relative overflow-hidden bg-transparent">
+          <div className="container mx-auto px-6">
+            <div className="text-center mb-24 space-y-4">
+              <h2 className="text-[#C46A2D] font-black tracking-[0.4em] text-xs uppercase flex items-center justify-center gap-3">
+                <MapPin size={14} className="gold-glow" /> Find Your Way
+              </h2>
+              <h3 className="text-6xl md:text-[8rem] font-serif tracking-tight uppercase text-[#FAF9F6]">Visit Us</h3>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-stretch">
+              {/* Address Card */}
+              <div className="lg:col-span-1 space-y-8 h-full">
+                <div className="glass p-12 rounded-[3.5rem] border-white/5 h-full flex flex-col justify-between">
+                  <div className="space-y-10">
+                    <div className="space-y-4">
+                      <p className="text-white/40 text-[10px] font-black uppercase tracking-[0.4em]">Our Sanctuary</p>
+                      <h4 className="text-4xl font-serif text-[#D4A24C] leading-tight">St. Ann&apos;s RCM Church</h4>
+                    </div>
+                    
+                    <div className="space-y-6">
+                      <div className="flex gap-6 items-start">
+                        <MapPin className="text-[#D6B36A] mt-1 shrink-0" size={24} />
+                        <p className="text-white/80 text-xl font-light leading-relaxed">
+                          Main Road, Sattenapalle, <br />
+                          Andhra Pradesh 522403
+                        </p>
+                      </div>
+                      <div className="flex gap-6 items-center">
+                        <Clock className="text-[#D6B36A] shrink-0" size={24} />
+                        <p className="text-white/80 text-xl font-light">Open Daily for Prayer</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <a 
+                    href="https://www.google.com/maps/dir/?api=1&destination=St.+Ann's+RCM+Church+Sattenapalle"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group relative inline-flex items-center justify-center w-full py-6 overflow-hidden glass rounded-full transition-all duration-500 border border-[#D6B36A]/20 hover:border-[#D6B36A] mt-12"
+                  >
+                    <div className="absolute inset-0 bg-[#D6B36A] translate-y-full group-hover:translate-y-0 transition-transform duration-700 ease-in-out" />
+                    <span className="relative text-[10px] uppercase tracking-[0.6em] font-black text-white group-hover:text-[#0F141B] transition-colors duration-500 flex items-center gap-3">
+                      Get Directions <Send size={12} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                    </span>
+                  </a>
+                </div>
+              </div>
+
+              {/* Map Embed */}
+              <div className="lg:col-span-2 relative h-[500px] lg:h-auto min-h-[400px]">
+                <div className="absolute -inset-4 border border-[#D6B36A]/10 rounded-[4rem] rotate-1" />
+                <div className="relative h-full glass rounded-[3.5rem] overflow-hidden border border-white/5 shadow-2xl">
+                  <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3830.123!2d80.145!3d16.395!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a4af18!2sSt.%20Ann's%20RCM%20Church!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin" 
+                    width="100%" 
+                    height="100%" 
+                    style={{ border: 0, filter: "invert(90%) hue-rotate(180deg) brightness(95%) contrast(90%) grayscale(0.5)" }} 
+                    allowFullScreen 
+                    loading="lazy" 
+                    referrerPolicy="no-referrer-when-downgrade"
+                  />
+                  {/* Subtle Map Overlay */}
+                  <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-[#0F141B]/20 to-transparent" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Contact Section */}
         <section id="contact" className="py-40 relative overflow-hidden">
           {/* Old Theme Background Picture (Mother Mary) */}
