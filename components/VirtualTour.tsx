@@ -50,12 +50,12 @@ const PhotoSphere = ({ texturePath, fallbackPath }: { texturePath: string; fallb
   if (!texture) return null;
 
   return (
-    <motion.group initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 2 }}>
+    <group>
       <mesh>
         <sphereGeometry args={[100, 60, 40]} />
         <meshBasicMaterial map={texture} side={THREE.BackSide} transparent opacity={1} />
       </mesh>
-    </motion.group>
+    </group>
   );
 };
 
