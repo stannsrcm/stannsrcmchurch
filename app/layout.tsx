@@ -16,6 +16,8 @@ export const metadata: Metadata = {
   description: "Official website of St. Ann's RCM Church, Sattenapalle. Join us in worship and community.",
 };
 
+import { UIProvider } from "@/components/UIProvider";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -25,13 +27,20 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Providers>
-          <CinematicIntro />
-          <AudioPlayer />
-          <Navigation />
-          <main>{children}</main>
-          <Footer />
+          <UIProvider>
+            <CinematicIntro />
+            <AudioPlayer />
+            <NavigationWrapper />
+            <main>{children}</main>
+            <Footer />
+          </UIProvider>
         </Providers>
       </body>
     </html>
   );
+}
+
+// Wrapper to use the context inside Navigation
+function NavigationWrapper() {
+  return <Navigation />;
 }

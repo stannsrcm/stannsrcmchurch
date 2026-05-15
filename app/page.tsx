@@ -4,7 +4,6 @@ import { useState, useRef, useEffect } from "react";
 import dynamic from "next/dynamic";
 
 const Hero3D = dynamic(() => import("@/components/Hero3D"), { ssr: false });
-const VirtualTour = dynamic(() => import("@/components/VirtualTour"), { ssr: false });
 
 import EventCard from "@/components/EventCard";
 import DailyVerse from "@/components/DailyVerse";
@@ -15,7 +14,6 @@ import { TiltCard } from "@/components/TiltCard";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import { AnimatePresence } from "framer-motion";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -26,7 +24,6 @@ export default function Home() {
   const [formData, setFormData] = useState({ name: "", email: "", subject: "", message: "" });
   const [status, setStatus] = useState({ loading: false, success: false, error: "" });
   const [events, setEvents] = useState<any[]>([]);
-  const [showTour, setShowTour] = useState(false);
   const { scrollYProgress } = useScroll();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -101,7 +98,7 @@ export default function Home() {
       <div className="flex flex-col relative overflow-hidden" ref={container}>
         {/* 3D Hero */}
         <div className="hero-section">
-          <Hero3D onOpenTour={() => setShowTour(true)} />
+          <Hero3D />
         </div>
 
         {/* Daily Bible Verse */}
@@ -287,10 +284,6 @@ export default function Home() {
           </section>
         </div>
       </div>
-
-      <AnimatePresence>
-        {showTour && <VirtualTour onClose={() => setShowTour(false)} />}
-      </AnimatePresence>
     </>
   );
 }

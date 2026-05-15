@@ -5,9 +5,10 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useUI } from "./UIProvider";
 
 const Navigation = () => {
+  const { openTour } = useUI();
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
@@ -70,6 +71,14 @@ const Navigation = () => {
               <span className={`absolute -bottom-2 left-0 w-0 h-[1px] bg-[#D4A24C] transition-all duration-500 group-hover:w-full ${pathname === link.href ? "w-full" : ""}`} />
             </Link>
           ))}
+          
+          <button
+            onClick={openTour}
+            className="px-8 py-2.5 rounded-full border border-[#D4A24C]/30 glass text-[#D4A24C] text-[10px] font-black uppercase tracking-[0.3em] hover:bg-[#D4A24C] hover:text-[#111111] hover:border-[#D4A24C] transition-all duration-500"
+          >
+            360° Sanctuary
+          </button>
+
           <Link
             href="/admin"
             className="px-8 py-2.5 rounded-full border border-white/10 glass text-[#D1D5DB] text-[10px] font-black uppercase tracking-[0.3em] hover:bg-[#D4A24C] hover:text-[#111111] hover:border-[#D4A24C] transition-all duration-500"
@@ -106,9 +115,20 @@ const Navigation = () => {
                 {link.name}
               </Link>
             ))}
+            
+            <button
+              onClick={() => {
+                setIsOpen(false);
+                openTour();
+              }}
+              className="px-6 py-2 rounded-full bg-[#D6B36A] text-[#0F141B] font-bold"
+            >
+              360° Sanctuary
+            </button>
+
             <Link
               href="/admin"
-              className="px-6 py-2 rounded-full bg-[#D6B36A] text-[#0F141B] font-bold"
+              className="px-6 py-2 rounded-full border border-white/10 text-white font-bold"
               onClick={() => setIsOpen(false)}
             >
               Admin Portal

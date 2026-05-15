@@ -61,11 +61,10 @@ const BackgroundPlane = () => {
   );
 };
 
-interface Hero3DProps {
-  onOpenTour: () => void;
-}
+import { useUI } from "./UIProvider";
 
-const Hero3D = ({ onOpenTour }: Hero3DProps) => {
+const Hero3D = () => {
+  const { openTour } = useUI();
   const [webGLSupported, setWebGLSupported] = useState(true);
 
   useEffect(() => {
@@ -182,7 +181,7 @@ const Hero3D = ({ onOpenTour }: Hero3DProps) => {
             </a>
 
             <button
-              onClick={onOpenTour}
+              onClick={openTour}
               className="group relative inline-flex items-center justify-center px-10 md:px-16 py-4 md:py-6 overflow-hidden glass rounded-full transition-all duration-500 border border-[#D6B36A]/30 hover:border-[#D6B36A]"
             >
               <div className="absolute inset-0 bg-white/5 translate-y-full group-hover:translate-y-0 transition-transform duration-700 ease-in-out" />
