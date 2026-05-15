@@ -10,6 +10,10 @@ export default function CinematicIntro() {
   const [isVisible, setIsVisible] = useState(true);
   const [hasStarted, setHasStarted] = useState(false);
   const [webGLSupported, setWebGLSupported] = useState(true);
+  const [sequence, setSequence] = useState<"dark" | "vortex" | "forming" | "complete">("dark");
+  const [progress, setProgress] = useState(0);
+  const [vortex, setVortex] = useState(0.05);
+  const bellsRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
     try {
